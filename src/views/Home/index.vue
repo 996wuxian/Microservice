@@ -1,18 +1,19 @@
 <template>
   <div>
-    <!-- <navbar></navbar>
-    <crumbs></crumbs> -->
-    <h2>首页</h2>  
+    <navbar></navbar>
+    <!-- <crumbs></crumbs> -->
+    <div class="content">
+      </div> 
   </div>
 </template>
 
 <script>
-  // import navbar from '@/components/Navbar'
+  import navbar from '@/components/Navbar'
   // import crumbs from '@/components/Crumbs'
 
   export default {
     components: {
-      // navbar,
+      navbar,
       // crumbs
     }
  }

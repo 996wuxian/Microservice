@@ -1,10 +1,5 @@
 <template>
-  <div>
-    <div class="content">
-      
-
-    </div>
-  </div>
+  <div>其他</div>
 </template>
 
 <script>

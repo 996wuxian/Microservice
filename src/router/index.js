@@ -48,7 +48,7 @@ const routes = [
             component: () => import('@/views/ContentManagement/Pack'),
             meta: {
               title: '打包'
-            },
+            }
           },
           {
             path:'express',
@@ -56,7 +56,7 @@ const routes = [
             component: () => import('@/views/ContentManagement/Express'),
             meta: {
               title: '快递'
-            },
+            }
           },
           {
             path:'secondHand',
@@ -64,8 +64,16 @@ const routes = [
             component: () => import('@/views/ContentManagement/SecondHand'),
             meta: {
               title: '二手物品'
-            },
-          }
+            }
+          },
+          {
+            path:'other',
+            name:'other',
+            component: () => import('@/views/ContentManagement/Other'),
+            meta: {
+              title: '其他'
+            }
+          },
         ]
       }
     ]

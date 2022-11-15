@@ -1,5 +1,5 @@
 <template>
-	<div class="sidebar">
+	<div class="sidebarPage">
 		<div v-for="(item, index) in navItem" :key="index" class="nav">
 			<div class="navItem" @click="toggle(item)">
 				<!-- 图标 -->
@@ -17,7 +17,7 @@
 				:class="item.children && childrenOpen ? 'childBoxOpen' : 'childBox'"
 			>
 				<!-- 儿子(如果有儿子，且open为真就显示) -->
-				<div v-if="item.children && childrenOpen">
+				<div v-show="item.children && childrenOpen">
 					<!-- 遍历item里的children -->
 					<div
 						v-for="(child, i) in item.children"
@@ -58,10 +58,9 @@ export default {
 			}
 		},
 	},
-
 	computed: {
 		textShow() {
-			// return this.$store.state.SideBarIndent
+			return this.$store.state.page.SideBarIndent
 		},
 		// 用vuex来存一个open来控制子菜单打开与关闭
 		childrenOpen() {
@@ -75,7 +74,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.sidebar {
+.sidebarPage {
 	width: 100%;
 	height: 100vh;
 	background-color: #304156;
@@ -111,12 +110,12 @@ export default {
 	}
 	.childBox {
 		height: 0px;
-		transition: all 0.3s;
+		transition: all 0.2s;
 	}
 	.childBoxOpen {
 		overflow: hidden;
-		height: 168px;
-		transition: all 0.3s;
+		height: 224px;
+		transition: all 0.2s;
 	}
 	.listItemChild {
 		background-color: #1f2d3d;
