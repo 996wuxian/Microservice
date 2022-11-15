@@ -59,6 +59,7 @@ export default {
 		},
 	},
 	computed: {
+		// 当点击缩进按钮后，让字体隐藏
 		textShow() {
 			return this.$store.state.page.SideBarIndent
 		},

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import store from '@/store/index'
+
 Vue.use(VueRouter)
 
 // 防止重复点击当前路由报错问题
@@ -84,6 +86,20 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+// 获取路径
+router.beforeEach((to, from, next) => {
+  // console.log(from.name)  //从哪个路由来
+  // console.log(to.name)  //去到哪个路由
+  const { matched } = to
+  const path = []
+  for (const item of matched) {
+    if (item.meta.title) {
+      path.push(item.meta)
+    }
+  }
+  store.commit('sidebar/getPath', path)
+  next()
 })
 
 export default router

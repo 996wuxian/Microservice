@@ -39,7 +39,9 @@ export default {
     // 二级菜单开关
     SubmenuOpen: false,
     // 当点击缩进按钮字体的显示与隐藏
-    SubmenuTextHide: false
+    SubmenuTextHide: false,
+    // 获取路由路径
+    currPath: [],  // 装beforeEach传过来的路径的
   },
   mutations: {
     // 点击开关按钮打开二级菜单
@@ -49,6 +51,10 @@ export default {
     // 点击缩进按钮关闭二级菜单
     SubmenuClose(state) {
       state.SubmenuOpen = false
+    },
+    // 获取路径
+    getPath(state, path) {
+      state.currPath = path
     }
   }
 }

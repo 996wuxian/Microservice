@@ -49,7 +49,6 @@ export default {
 			flipBtn: false,
 			rotate: false,
 			currPath: [], // 用来装vuex存的路径信息
-			// routeChange: this.$route  // 监听路由
 		}
 	},
 	methods: {
@@ -62,21 +61,21 @@ export default {
 			}
 		},
 		btnPersonal() {
-			// this.rotate = !this.rotate
+			this.rotate = !this.rotate
 		},
 		CrumbsIsShow(e, i) {
 			// 如果是1级菜单，则i=0，二级为 0 1
 			// 当遍历出第一个item, 0 , 2 - 1 = 0? false, 结果为true, 显示斜杠
 			// 当遍历出第二个item, 1 , 2 - 1 = 1? true, 结果为false, 隐藏斜杠
-			// return this.currPath.length - 1 == i ? false : true
+			return this.currPath.length - 1 == i ? false : true
 		},
 	},
 	mounted() {
-		// if(this.$route.meta.title) {
-		//   this.title = this.$route.meta.title
-		// }
+		if(this.$route.meta.title) {
+		  this.title = this.$route.meta.title
+		}
 		// // 当页面加载完后，让vuex里存的路径给当前组件
-		// this.currPath = this.$store.state.currPath
+		this.currPath = this.$store.state.sidebar.currPath
 	},
 }
 </script>
@@ -109,6 +108,9 @@ export default {
 		.title {
 			color: #97a8be;
 			float: left;
+			span {
+				margin: 0 5px;
+			}
 		}
 		.personal {
 			width: 94px;
