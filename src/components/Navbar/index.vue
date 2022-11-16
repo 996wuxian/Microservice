@@ -28,10 +28,10 @@
 					<div class="mask" :class="rotate ? 'maskOpen' : 'mask'">
 						<!-- 控制flex布局 -->
 						<div class="list" v-show="rotate">
-							<div>个人中心</div>
-							<div>首页</div>
-							<div>项目地址</div>
-							<div class="loginOut">退出登录</div>
+							<div @click="person">个人中心</div>
+							<div @click="toHome">首页</div>
+							<div><a href="">项目地址</a></div>
+							<div class="loginOut" @click="loginOut">退出登录</div>
 						</div>
 					</div>
 				</div>
@@ -52,6 +52,7 @@ export default {
 		}
 	},
 	methods: {
+		// 缩进按钮
 		indentBtn() {
 			this.$store.commit('page/changeSideBar')
 			this.flipBtn = this.$store.state.page.SideBarIndent
@@ -60,15 +61,34 @@ export default {
 			  this.$store.commit('sidebar/SubmenuClose')
 			}
 		},
+		// 个人中心按钮
 		btnPersonal() {
 			this.rotate = !this.rotate
 		},
+		// 面包屑斜线
 		CrumbsIsShow(e, i) {
 			// 如果是1级菜单，则i=0，二级为 0 1
 			// 当遍历出第一个item, 0 , 2 - 1 = 0? false, 结果为true, 显示斜杠
 			// 当遍历出第二个item, 1 , 2 - 1 = 1? true, 结果为false, 隐藏斜杠
 			return this.currPath.length - 1 == i ? false : true
 		},
+		// 前往个人中心
+		person() {
+			console.log('个人中心');
+		},
+		// 前往首页
+		toHome() {
+			this.$router.push({
+				name: 'home'
+			})
+		},
+		// 退出登录
+		loginOut() {
+			this.$router.push({
+				name: 'login'
+			})
+			this.$message.success('退出登录成功')
+		}
 	},
 	mounted() {
 		if(this.$route.meta.title) {
