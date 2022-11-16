@@ -82,7 +82,7 @@ export default {
 
 <style scoped lang="less">
 .navbar {
-	border-bottom: 1px solid rgb(203, 203, 177);
+	border-bottom: 1px solid beige;
 	.content {
 		width: 100%;
 		height: 50px;

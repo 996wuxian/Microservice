@@ -1,16 +1,19 @@
 <template>
-
   <div>
     <navbar></navbar>
-    快递</div>
+    <crumbs></crumbs>
+    快递
+  </div>
 </template>
 
 <script>
   import navbar from '@/components/Navbar'
+  import crumbs from '@/components/Crumbs'
+
   export default {
     components: {
       navbar,
-      // crumbs
+      crumbs
     }
  }
 </script>
