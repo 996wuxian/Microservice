@@ -3,7 +3,7 @@
 		<div class="login-logo">
 			<img src="@/assets/img/Login/login-logo.png" alt="" />
 		</div>
-		<div class="loginInput">
+		<div class="loginInput" @keyup.13="login()">
 			<div class="form-control">
 				<input
 					type="value"
@@ -47,7 +47,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="loginBtn"><button @click="login">Login</button></div>
+		<div class="loginBtn"><button @click="login()">Login</button></div>
 		<div class="forgot"><a href="javascript:;">forgot password</a></div>
 		<div class="registerText" @click="showRegister">
 			<a href="javascript:;">register</a>
@@ -113,7 +113,7 @@ export default {
 			this.openPassword = !this.openPassword
 		},
 		// 请求
-		async login() {
+		async login(event) {
 			const loginInfo = {
 				email: this.email,
 				password: this.password,
@@ -122,7 +122,6 @@ export default {
         const res = await this.$store.dispatch("login/handLogin", loginInfo)
         if (res) {
           this.$router.push("/layout")
-          console.log(this.$store.state.login.name)
         }
       }
 		},

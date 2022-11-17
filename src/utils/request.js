@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Message } from 'element-ui';
 
 const server = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: 'http://localhost:8122',
   timeout: 5000
 })
 
