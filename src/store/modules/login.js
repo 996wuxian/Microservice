@@ -3,11 +3,25 @@ const loginApi = new LoginApi()
 export default {
   namespaced:true,
   state: {
-    registerShow:false
+    registerShow:false,
+    forgotPasswordShow: false,
   },
   mutations: {
-    isShow(state) {
+    // 注册页面显示
+    registerShow(state) {
       state.registerShow = !state.registerShow
+    },
+    // 修改页面显示
+    forgotPasswordShow(state) {
+      state.forgotPasswordShow = !state.forgotPasswordShow
+    },
+    // 注册页面隐藏
+    registerHide(state) {
+      state.registerShow = false
+    },
+    // 修改页面隐藏
+    forgotPasswordHide(state) {
+      state.forgotPasswordShow = false
     }
   },
   actions: {

@@ -2,7 +2,8 @@
   <div class="userLogin">
     <div class="login-form">
       <div class="loginPage"><userLogin></userLogin></div>
-      <div class="registerPage" :class="isShow ? 'registerPageShow' : ''"><createUser></createUser></div>
+      <div class="registerPage"><createUser></createUser></div>
+      <div class="forgotPasswordPage"><forgotPassword></forgotPassword></div>
     </div>
     <div class="footer">
       <img src="@/assets/img/备案图标.png" alt="">
@@ -14,30 +15,16 @@
 </template>
 
 <script>
-
 import userLogin from '@/components/User/userLogin.vue'
 import createUser from '@/components/User/createUser.vue'
+import forgotPassword from '@/components/User/forgotPassword.vue'
 
   export default {
-    data() {
-      return {
-        email:'',
-        password: '',
-        registerShow: false
-      }
-    },
-    computed: {
-      isShow() {
-        return this.$store.state.login.registerShow
-      }  
-    },
     components: {
       userLogin,
-      createUser
-    },
-    methods: {
-    },
-    
+      createUser,
+      forgotPassword
+    }
  }
 </script>
 
@@ -57,10 +44,10 @@ import createUser from '@/components/User/createUser.vue'
       .loginPage {
         position: absolute;
         width: 100%;
-        height: 100%;
       }
       .registerPage {
         position: absolute;
+        width: 100%;
       }
     }
     .footer {

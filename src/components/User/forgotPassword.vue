@@ -1,11 +1,11 @@
 <template>
-	<div class="register" :class="isShow ? 'registerShow' : ''">
-		<div class="content" v-show="isShow">
-			<div class="register-logo">
-				<img src="@/assets/img/Login/register-logo.png" alt="" />
+	<div class="forgotPwd" :class="showForgotPwd ? 'forgotPwdShow' : ''">
+		<div class="content" v-show="showForgotPwd">
+			<div class="forgotPwdShow-logo">
+				<img src="@/assets/img/Login/change-logo.png" alt="" />
 			</div>
-			<div class="registerInput">
-				<div class="form-control">
+			<div class="forgotPwdShowInput">
+				<div class="form-control" v-show="ecInputShow">
 					<input
 						type="value"
 						required=""
@@ -14,20 +14,17 @@
 						@keyup="clearBtnShow()"
 					/>
 					<label>
-						<span style="transition-delay: 0ms">N</span>
-						<span style="transition-delay: 50ms">e</span>
-						<span style="transition-delay: 100ms">w</span>
-						<span style="transition-delay: 150ms">e</span>
-						<span style="transition-delay: 200ms">m</span>
-						<span style="transition-delay: 250ms">a</span>
-						<span style="transition-delay: 300ms">i</span>
-						<span style="transition-delay: 350ms">l</span>
+						<span style="transition-delay: 0ms">E</span>
+						<span style="transition-delay: 50ms">m</span>
+						<span style="transition-delay: 100ms">a</span>
+						<span style="transition-delay: 150ms">i</span>
+						<span style="transition-delay: 200ms">l</span>
 					</label>
 					<div class="close" v-show="CloseShow" @click="clearValue">
 						<i class="el-icon-circle-close"></i>
 					</div>
 				</div>
-				<div class="form-control">
+				<div class="form-control" v-show="pwdInputShow">
 					<input
 						:type="openPassword ? 'password' : 'text'"
 						required=""
@@ -52,7 +49,7 @@
 						<i :class="openPassword ? 'el-icon-turn-off' : 'el-icon-open'"></i>
 					</div>
 				</div>
-				<div class="form-control">
+				<div class="form-control" v-show="pwdInputShow">
 					<input
 						:type="openPassword ? 'password' : 'text'"
 						required=""
@@ -79,7 +76,7 @@
 						<i :class="openPassword ? 'el-icon-turn-off' : 'el-icon-open'"></i>
 					</div>
 				</div>
-				<div class="form-control">
+				<div class="form-control" v-show="ecInputShow">
 					<input type="value" required="" v-model.number.trim="code" />
 					<label>
 						<span style="transition-delay: 0ms">C</span>
@@ -89,8 +86,9 @@
 					</label>
 				</div>
 			</div>
-			<div class="registerBtn" @click="register"><button>Register</button></div>
-			<div class="cockBtn" @click="sendCock"><button>SendCock</button></div>
+			<div class="cockBtn" @click="sendCock" v-show="ecInputShow"><button>SendCock</button></div>
+			<div class="confirm" @click="confirmed" v-show="ecInputShow"><button>Confirm</button></div>
+			<div class="changeBtn" @click="change" v-show="pwdInputShow"><button>Change</button></div>
 		</div>
 	</div>
 </template>
@@ -98,27 +96,36 @@
 <script>
 
 export default {
-	name: "createUser",
+	name: "forgotPassword",
 	data() {
 		return {
 			email: "",
+			getEmail: '',
 			password: "",
 			againPassword: "",
+      // 
 			CloseShow: false,
 			openPassword: true,
 			openShow: false,
 			code: '',
+      // 
 			checkEmail: false,
-			checkPassword: false
+			checkPassword: false,
 		}
 	},
 	computed: {
-		isShow() {
-			return this.$store.state.login.registerShow
+		showForgotPwd() {
+			return this.$store.state.login.forgotPasswordShow
+		},
+		pwdInputShow() {
+			return this.$store.state.forgot.pwdInputShow
+		},
+		ecInputShow() {
+			return this.$store.state.forgot.ecInputShow
 		},
 	},
 	methods: {
-		check() {
+    check() {
 			// 邮箱验证的正则表达式
 			const EmailReg = /^[1-9][0-9]{5,10}@qq.com$/
 			if (this.email != '') {
@@ -126,15 +133,15 @@ export default {
 					// 这里是邮箱验证成功的代码
 					this.checkEmail = true
 				}  else {
-					this.$message.warning("邮箱输入错误,请输入QQ邮箱")
+					this.$message.warning("邮箱输入错误")
 				} 
 			} else {
 				this.$message.warning("请输入邮箱")
 			}
 		},
-		// 当Username输入内容时，让清除按钮显示
+    // 当Username输入内容时，让清除按钮显示
 		clearBtnShow() {
-			if (this.email) {
+			if (this.email.trim != '') {
 				this.CloseShow = true
 			} else {
 				this.CloseShow = false
@@ -142,7 +149,7 @@ export default {
 		},
 		// 点击清除按钮清除输入框的内容然后让清除按钮隐藏
 		clearValue() {
-			if (this.email) {
+			if (this.email.trim != '') {
 				this.email = ""
 				this.CloseShow = false
 			}
@@ -177,54 +184,81 @@ export default {
 				}
 			}
 		},
-		// 请求
-		async register() {
-			let time = new Date()
-			const data = {
-				email: this.email,
-				password: this.password,
-				code: this.code,
-				codeDate: time
-			}
-			if (this.checkEmail && this.checkPassword) {
-				if (this.code == "") {
-					this.$message.warning("请输入验证码")
-				} else {
-					const res = await this.$store.dispatch("register/handRegister", data)
-					console.log(res)
-					if (res) {
-						(this.email = ""), (this.password = ""), (this.againPassword = ""), (this.code = "")
-						this.$store.commit("login/registerShow")
-						this.$message.success('注册成功')
-						this.checkPassword = false
-						this.checkEmail = false
-					}
-				}
-			} else {
-				this.$message.warning("请输入正确的邮箱和密码")
-			}
-		},
-    // 发送验证码
+		// 发送验证码
     async sendCock() {
 			const data = {
 				email: this.email,
 			}
-      if (this.checkEmail && this.checkPassword) {
-        const res = await this.$store.dispatch('register/registerCode', data)
+      if (this.checkEmail) {
+        const res = await this.$store.dispatch('forgot/forgotCode', data)
         if (res) {
 					this.$message.success("验证码已发送")
         }
       } 
 			else {
-        this.$message.warning('请输入邮箱和密码')
+        this.$message.warning('请输入邮箱')
       }
+    },
+		// 确认验证码和邮箱是否存在数据库
+    async confirmed() {
+			this.getEmail = this.email
+			let time = new Date()
+			const data = {
+				email: this.email,
+				code: this.code,
+				codeTime: time
+			}
+			if (this.email && this.code) {
+				// 查询请求的code是否和数据库的一样
+        const res = await this.$store.dispatch('forgot/confirmChange', data)
+				if (res) {
+					this.$message.success('请输入新的密码')
+					this.$store.commit('forgot/pwdInputShow')
+					this.$store.commit('forgot/ecInputShow')
+					// 在清空前将这个邮箱赋值给...
+					this.email = ''
+					this.code = ''
+					// 让清除图标隐藏(bug)
+					this.CloseShow = false
+				}
+			} else if(this.email === '') {
+				this.$message.warning('请输入QQ邮箱')
+			} else {
+				this.$message.warning('请输入验证码')
+			}
+    },
+    async change() {
+			const data = {
+				email: this.getEmail,
+				password: this.password
+				// 使用后要释放内存
+			}
+			if (this.password && this.againPassword) {
+        const res = await this.$store.dispatch('forgot/handForgot', data)
+				if (res) {
+					this.$message.success('请输入新的密码')
+					this.$store.commit('forgot/pwdInputShow')
+					this.$store.commit('forgot/ecInputShow')
+					// 在清空前将这个邮箱赋值给...
+					this.email = ''
+					this.code = ''
+					// 让清除图标隐藏(bug)
+					this.CloseShow = false
+				}
+			} else if(this.email === '') {
+				this.$message.warning('请输入QQ邮箱')
+			} else {
+				this.$message.warning('请输入验证码')
+			}
+			this.$store.commit('login/forgotPasswordHide')
+			this.$message.success('修改成功')
     }
-	},
+  }
 }
 </script>
 
 <style scoped lang="less">
-.register {
+.forgotPwd {
 	position: relative;
 	left: 300px;
 	width: 0px;
@@ -237,17 +271,17 @@ export default {
 	.content {
 		width: 100%;
 		height: 100%;
-		.register-logo {
+		.forgotPwdShow-logo {
 			width: 100%;
 			height: 118px;
 		}
-		.register-logo img {
+		.forgotPwdShow-logo img {
 			position: absolute;
-			top: 14px;
+			top: 32px;
 			width: 290px;
 			left: 0;
 		}
-		.registerInput {
+		.forgotPwdShowInput {
 			position: absolute;
 			left: 50px;
 			margin-top: 14px;
@@ -296,18 +330,28 @@ export default {
 				transform: translateY(-30px);
 			}
 		}
-		.registerBtn {
-			position: absolute;
+    .confirm {
+      position: absolute;
 			width: 120px;
 			height: 40px;
-			bottom: 40px;
+			bottom: 160px;
 			left: 160px;
+    }
+		.changeBtn {
+			position: absolute;
+			width: 200px;
+			height: 40px;
+			bottom: 160px;
+			left: 47px;
+		}
+		.changeBtn button {
+			width: 200px;
 		}
 		.cockBtn {
 			position: absolute;
 			width: 120px;
 			height: 40px;
-			bottom: 40px;
+			bottom: 160px;
 			left: 20px;
 		}
 		button {
@@ -329,7 +373,7 @@ export default {
 		}
 	}
 }
-.registerShow {
+.forgotPwdShow {
 	width: 300px;
 	transition: all 0.3s;
 	overflow: hidden;

@@ -1,9 +1,9 @@
 <template>
-	<div class="login">
+	<div class="login" @keyup.13="login">
 		<div class="login-logo">
 			<img src="@/assets/img/Login/login-logo.png" alt="" />
 		</div>
-		<div class="loginInput" @keyup.13="login()">
+		<div class="loginInput">
 			<div class="form-control">
 				<input
 					type="value"
@@ -47,11 +47,9 @@
 				</div>
 			</div>
 		</div>
-		<div class="loginBtn"><button @click="login()">Login</button></div>
-		<div class="forgot"><a href="javascript:;">forgot password</a></div>
-		<div class="registerText" @click="showRegister">
-			<a href="javascript:;">register</a>
-		</div>
+		<div class="loginBtn"><button @click="login">Login</button></div>
+		<div class="forgot" @click="showForgotPwd">forgot password</div>
+		<div class="registerText" @click="showRegister">register</div>
 	</div>
 </template>
 
@@ -62,8 +60,11 @@ export default {
 		return {
 			email: "",
 			password: "",
+			// 清除按钮显示
 			CloseShow: false,
+			// 显示密码
 			openPassword: true,
+			// 
 			openShow: false,
       registerShow:'',
       allow:false
@@ -80,7 +81,7 @@ export default {
 				// 这里是邮箱验证成功的代码
         this.allow = true
 			} else if (str === "") {
-				this.$message.warning("请输入邮箱")
+				this.$message.warning("请输入QQ邮箱")
 			} else {
 				this.$message.warning("邮箱输入错误")
 			}
@@ -113,7 +114,7 @@ export default {
 			this.openPassword = !this.openPassword
 		},
 		// 请求
-		async login(event) {
+		async login() {
 			const loginInfo = {
 				email: this.email,
 				password: this.password,
@@ -121,14 +122,30 @@ export default {
       if (this.email && this.password && this.allow) {
         const res = await this.$store.dispatch("login/handLogin", loginInfo)
         if (res) {
+					console.log('登录成功');
+					this.email = ''
+					this.password = ''
+					this.CloseShow = false
+					this.openShow = false
           this.$router.push("/layout")
         }
       }
 		},
     // 显示register
     showRegister() {
-      this.$store.commit('login/isShow')
-    }
+      this.$store.commit('login/registerShow')
+			// 隐藏ForgotPwd
+      this.$store.commit('login/forgotPasswordHide')
+      this.$store.commit('forgot/changeRegisterPage')
+    },
+		// 显示ForgotPwd
+		showForgotPwd() {
+      this.$store.commit('login/forgotPasswordShow')
+			// 隐藏register
+      this.$store.commit('login/registerHide')
+			// 重新回到改变页面
+      this.$store.commit('forgot/changeRegisterPage')
+		}
 	},
 }
 </script>
@@ -142,6 +159,7 @@ export default {
 	text-align: center;
 	box-shadow: 2px 2px 10px #313f4c;
 	z-index: 2;
+	color: #9cd4ea;
 	.login-logo img {
 		width: 280px;
 	}
@@ -198,23 +216,23 @@ export default {
 		position: absolute;
 		left: 80px;
 		bottom: 100px;
-		a {
-			font-style: oblique;
-		}
-		a:hover {
-			color: #fff;
-		}
+		font-style: oblique;
+		cursor: pointer;
+	}
+	.forgot:hover {
+		transition: all .3s;
+		color: #fff;
 	}
 	.registerText {
 		position: absolute;
 		left: 120px;
 		bottom: 60px;
-		a {
-			font-style: oblique;
-		}
-		a:hover {
-			color: #fff;
-		}
+		font-style: oblique;
+		cursor: pointer;
+	}
+	.registerText:hover {
+		transition: all .3s;
+		color: #fff;
 	}
 	.loginBtn {
 		position: absolute;

@@ -8,4 +8,11 @@ export class RegisterApi {
       data
     })
   }
+  registerCode(data) {
+    return axios({
+      url: '/users/getRegCode',
+      method: 'post',
+      data
+    })
+  }
 }
