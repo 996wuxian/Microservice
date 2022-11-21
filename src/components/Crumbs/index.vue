@@ -74,14 +74,14 @@
         color: #fff;
       }
     }
+    .crumbsItem:nth-of-type(1) {
+      margin-left: 17px;
+    }
     .addBg {
       background-color: #42b983;
       border: 1px solid #42b983;
       padding: 0 6px;
       color: #fff;
     }
-  }
-  .crumbs div:nth-of-type(1) {
-    margin-left: 17px;
   }
 </style>

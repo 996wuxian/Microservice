@@ -58,8 +58,8 @@ export default {
 	name: "userLogin",
 	data() {
 		return {
-			email: "",
-			password: "",
+			email: "1640551913@qq.com",
+			password: "wuxian123",
 			// 清除按钮显示
 			CloseShow: false,
 			// 显示密码
@@ -81,7 +81,10 @@ export default {
 				// 这里是邮箱验证成功的代码
         this.allow = true
 			} else if (str === "") {
-				this.$message.warning("请输入QQ邮箱")
+				this.$message({
+					type:'warning',
+					message:'请输入邮箱',
+				})
 			} else {
 				this.$message.warning("邮箱输入错误")
 			}
@@ -122,12 +125,11 @@ export default {
       if (this.email && this.password && this.allow) {
         const res = await this.$store.dispatch("login/handLogin", loginInfo)
         if (res) {
-					console.log('登录成功');
-					this.email = ''
+					this.$message.success('登录成功')
 					this.password = ''
 					this.CloseShow = false
 					this.openShow = false
-          this.$router.push("/layout")
+					this.$router.push('/layout')
         }
       }
 		},

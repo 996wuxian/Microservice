@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
 import store from '@/store/index'
 
 Vue.use(VueRouter)
@@ -14,8 +13,15 @@ VueRouter.prototype.push = function push(location) {
 const routes = [
   {
     path: '/',
+    redirect: 'login'
+  },
+  {
+    path:'/login',
     name: 'login',
-    component: () => import('@/views/Login')
+    component: () => import('@/views/Login'),
+    // meta: {
+    //   requireAuth: true
+    // }
   },
   {
     path:'/layout',
@@ -96,6 +102,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   // console.log(from.name)  //从哪个路由来
   // console.log(to.name)  //去到哪个路由
+  // 获取sidebar路由跳转时携带的路径
   const { matched } = to
   const path = []
   for (const item of matched) {

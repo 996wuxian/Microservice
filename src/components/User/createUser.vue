@@ -191,7 +191,6 @@ export default {
 					this.$message.warning("请输入验证码")
 				} else {
 					const res = await this.$store.dispatch("register/handRegister", data)
-					console.log(res)
 					if (res) {
 						(this.email = ""), (this.password = ""), (this.againPassword = ""), (this.code = "")
 						this.$store.commit("login/registerShow")

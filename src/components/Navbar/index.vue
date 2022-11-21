@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import { removeToken } from '@/utils/auth'
+
 export default {
 	name: "navbar",
 	data() {
@@ -84,6 +86,7 @@ export default {
 		},
 		// 退出登录
 		loginOut() {
+			removeToken()
 			this.$router.push({
 				name: 'login'
 			})

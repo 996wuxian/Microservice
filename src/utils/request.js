@@ -2,6 +2,8 @@
 import axios from 'axios'
 // 引入错误类型
 import { Message } from 'element-ui';
+// 导入Token工具
+import { getToken, setToken } from '@/utils/auth'
 
 const server = axios.create({
   baseURL: 'http://localhost:8123',
@@ -9,16 +11,22 @@ const server = axios.create({
 })
 
 // 请求拦截
-// server.interceptors.request.use(
-//   config => {
-//   }
-// )
+server.interceptors.request.use((config) => {
+  if (config.url === "/userAdmin/getUserInfo") {
+    const userToken = getToken()
+    config.headers.Authorization = userToken
+  }
+	return config
+	},
+	(error) => {
+		Promise.reject(error);
+	}
+)
 
 // 响应拦截
 server.interceptors.response.use(
   response => {
     const res = response.data
-    // console.log(response);
     if (res.code !== 200) {
       if (res.code === 10006) {
         Message({
@@ -26,14 +34,18 @@ server.interceptors.response.use(
           message: `用户密码错误`
         })
         return
-      }
-
+      } 
       Message({
         type: 'error',
         message: `错误码：${res.code}, ${res.message}`
       })
       return
     } else {
+      // 如果请求的结果里有token才生成token
+      if (res.result) {
+        const {token = ''} = res.result
+        if (token) setToken(token)
+      }
       return res
     }
   },
@@ -43,7 +55,6 @@ server.interceptors.response.use(
       type: 'error',
       message: err
     })
-    // console.log(err);
   }
 )
 
