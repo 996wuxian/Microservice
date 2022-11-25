@@ -13,3 +13,7 @@ export function setToken(token) {
 export function removeToken() {
   return Cookies.remove(TokenKey)
 }
+
+export function setLocalStorageAndTime (key, value) {
+  window.localStorage.setItem(key, JSON.stringify({ data: value, time: new Date().getTime() }))
+}

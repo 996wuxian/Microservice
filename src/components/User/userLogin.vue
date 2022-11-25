@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import { setLocalStorageAndTime } from '@/utils/auth'
+
 export default {
 	name: "userLogin",
 	data() {
@@ -124,6 +126,7 @@ export default {
 			}
       if (this.email && this.password && this.allow) {
         const res = await this.$store.dispatch("login/handLogin", loginInfo)
+				setLocalStorageAndTime('admin',res)
         if (res) {
 					this.$message.success('登录成功')
 					this.password = ''

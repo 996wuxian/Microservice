@@ -12,7 +12,7 @@ const server = axios.create({
 
 // 请求拦截
 server.interceptors.request.use((config) => {
-  if (config.url === "/userAdmin/getUserInfo") {
+  if (config.url === "/user/getUserInfo") {
     const userToken = getToken()
     config.headers.Authorization = userToken
   }

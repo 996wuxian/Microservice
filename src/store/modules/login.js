@@ -4,7 +4,7 @@ export default {
   namespaced:true,
   state: {
     registerShow:false,
-    forgotPasswordShow: false,
+    forgotPasswordShow: false
   },
   mutations: {
     // 注册页面显示
@@ -22,7 +22,7 @@ export default {
     // 修改页面隐藏
     forgotPasswordHide(state) {
       state.forgotPasswordShow = false
-    }
+    },
   },
   actions: {
     async handLogin({commit}, data) {

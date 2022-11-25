@@ -3,20 +3,20 @@ import axios from '@/utils/request'
 export class UserManagementApi {
   getAllUserInfo() {
     return axios({
-      url: '/userAdmin/getUserInfo',
+      url: '/user/getUserInfo',
       method: 'get',
     })
   }
   updateAdmin(data) {
     return axios({
-      url: 'userAdmin/updateAdmin',
+      url: 'user/updateAdmin',
       method: 'post',
       data
     })
   }
   deleteUser(data) {
     return axios({
-      url: 'userAdmin/deleteUser',
+      url: 'user/deleteUser',
       method: 'post',
       data
     })

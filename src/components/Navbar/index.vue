@@ -91,6 +91,7 @@ export default {
 				name: 'login'
 			})
 			this.$message.success('退出登录成功')
+			localStorage.removeItem('admin')
 		}
 	},
 	mounted() {

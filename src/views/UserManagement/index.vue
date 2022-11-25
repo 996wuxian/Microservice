@@ -4,18 +4,18 @@
 		<div class="crumbs"><crumbs></crumbs></div>
 		<div class="content">
 			<el-table :data="tableData" style="width: 100%" class="el-table">
-				<el-table-column label="ID" width="100px" align="center">
+				<el-table-column label="ID" width="80px" align="center">
 					<template slot-scope="scope">
 						<span>{{ scope.row.id }}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="邮箱" width="250px">
+				<el-table-column label="邮箱" width="200px">
 					<template slot-scope="scope">
 						<i class="el-icon-message"></i>
 						<span style="margin-left: 10px">{{ scope.row.email }}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="创建日期" width="250px">
+				<el-table-column label="创建日期" width="200px">
 					<template slot-scope="scope">
 						<i class="el-icon-time"></i>
 						<span style="margin-left: 10px">{{
@@ -31,12 +31,12 @@
 						}}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="是否为管理员" width="180" align="center">
+				<el-table-column label="是否为管理员" width="120" align="center">
 					<template slot-scope="scope">
 						<span style="margin-left: 10px">{{ scope.row.is_admin }}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="操作">
+				<el-table-column label="操作" width="300">
 					<template slot-scope="scope">
 						<el-button
 							size="mini"
@@ -59,13 +59,20 @@
 						>
 					</template>
 				</el-table-column>
+				<el-table-column width="200" align="center">
+					<template slot="header">
+						<el-input
+							size="mini"
+							v-model="addUserForm.username"
+							placeholder="输入关键字搜索"
+						/>
+					</template>
+				</el-table-column>
 			</el-table>
 			<div class="block">
 				<el-pagination
 					:current-page="1"
-					:page-sizes="[10]"
-					:page-size="100"
-					layout="total, sizes, prev, pager, next, jumper"
+					layout="total, prev, pager, next, jumper"
 					:total="this.tableData.length"
 				>
 				</el-pagination>
@@ -82,6 +89,12 @@ export default {
 	data() {
 		return {
 			tableData: [],
+			addUserForm: {
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
+      },
 		}
 	},
 	components: {
@@ -205,7 +218,7 @@ export default {
 
 <style scoped lang="less">
 .userManagement {
-	position: relative;
+	height: 100vh;
 	.nav {
 		position: relative;
 		z-index: 2;
@@ -215,14 +228,15 @@ export default {
 		z-index: 1;
 	}
 	.content {
-		max-width: 100%;
+		width: 100%;
+    height: 85vh;
+    overflow:auto;
 		position: relative;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
 		.block {
-
+			width: 100%;
+			text-align: center;
+			position: absolute;
+			bottom: 0;
 		}
 	}
 }
