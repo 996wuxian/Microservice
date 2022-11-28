@@ -1,30 +1,29 @@
 import axios from '@/utils/request'
 
-export class PackApi {
-  addPack(data) {
+export class ExpressApi {
+  addExpress(data) {
     return axios({
-      url: '/packaged/addPack',
+      url: '/express/addExpress',
       method: 'post',
       data
     })
   }
-  getPack() {
+  getExpress() {
     return axios({
-      url: 'packaged/getPack',
+      url: '/express/getExpress',
       method: 'get',
     })
   }
-  updatePack(data) {
+  updateExpress(data) {
     return axios({
-      url: 'packaged/updatePack',
+      url: '/express/updateExpress',
       method: 'post',
       data
     })
   }
-  deletePack(data) {
-    console.log(data);
+  deleteExpress(data) {
     return axios({
-      url: 'packaged/deletePack',
+      url: '/express/deleteExpress',
       method: 'post',
       data
     })

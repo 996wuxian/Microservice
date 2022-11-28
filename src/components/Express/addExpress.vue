@@ -11,8 +11,8 @@
 				label-width="100px"
 				class="demo-ruleForm"
 			>
-				<el-form-item label="打包内容" prop="packTitle">
-					<el-input v-model.trim="ruleForm.packTitle"></el-input>
+				<el-form-item label="快递信息" prop="expressTitle">
+					<el-input v-model.trim="ruleForm.expressTitle"></el-input>
 				</el-form-item>
 				<el-form-item label="送达地方" prop="address">
 					<el-input v-model.trim="ruleForm.address"></el-input>
@@ -67,16 +67,15 @@ export default {
 		return {
 			dialogVisible: false,
 			ruleForm: {
-				packTitle: "",
+				expressTitle: "",
 				address: "",
 				date1: "",
 				date2: "",
 				price: "",
-				desc: "",
 			},
 			rules: {
-				packTitle: [
-					{ required: true, message: "请输入打包内容", trigger: "blur" },
+				expressTitle: [
+					{ required: true, message: "请输入快递内容", trigger: "blur" },
 					{
 						min: 5,
 						max: 80,
@@ -110,7 +109,6 @@ export default {
 					},
 				],
 				price: [{ required: true, message: "请输入金额", trigger: "blur" }],
-				desc: [{ required: true, message: "请填写留言", trigger: "blur" }],
 			},
 			// 判断日期的
 			pickerOptions: {
@@ -122,7 +120,6 @@ export default {
 					//若选择的日期小于等于当前日期（包含今天）： time.getTime() > Date.now()
 				},
 			},
-			tableData: [],
 		}
 	},
 	methods: {
@@ -131,7 +128,7 @@ export default {
 				if (valid) {
 					const username = JSON.parse(localStorage.getItem("admin"))
 					const data = {
-						packTitle: this.ruleForm.packTitle,
+						expressTitle: this.ruleForm.expressTitle,
 						address: this.ruleForm.address,
 						pack_data:
 							this.ruleForm.date1 + " " + this.formate(this.ruleForm.date2),
@@ -139,7 +136,7 @@ export default {
 						email: username.data.result.username,
 					}
 					// 发送请求
-					this.$store.dispatch("pack/addPack", data)
+					this.$store.dispatch("express/addExpress", data)
 					// 提交后重置内容
 					this.$refs[formName].resetFields()
 					this.$message.success("添加成功")

@@ -49,6 +49,8 @@
     width: 100%;
     height: 30px;
     box-shadow: 0 1px 4px rgb(151, 168, 190, .6);
+    position: relative;
+    z-index: 888;
     .crumbsItem {
       display: flex;
       padding: 0 6px;

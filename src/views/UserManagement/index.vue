@@ -4,18 +4,18 @@
 		<div class="crumbs"><crumbs></crumbs></div>
 		<div class="content">
 			<el-table :data="tableData" style="width: 100%" class="el-table">
-				<el-table-column label="ID" width="80px" align="center">
+				<el-table-column label="ID" width="100px" align="center">
 					<template slot-scope="scope">
 						<span>{{ scope.row.id }}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="邮箱" width="200px">
+				<el-table-column label="邮箱" width="220px">
 					<template slot-scope="scope">
 						<i class="el-icon-message"></i>
 						<span style="margin-left: 10px">{{ scope.row.email }}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="创建日期" width="200px">
+				<el-table-column label="创建日期" width="220px">
 					<template slot-scope="scope">
 						<i class="el-icon-time"></i>
 						<span style="margin-left: 10px">{{
@@ -23,7 +23,7 @@
 						}}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="修改日期" width="200px">
+				<el-table-column label="修改日期" width="220px">
 					<template slot-scope="scope">
 						<i class="el-icon-time"></i>
 						<span style="margin-left: 10px">{{
@@ -31,12 +31,12 @@
 						}}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="是否为管理员" width="120" align="center">
+				<el-table-column label="是否为管理员" width="100" align="center">
 					<template slot-scope="scope">
 						<span style="margin-left: 10px">{{ scope.row.is_admin }}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="操作" width="300">
+				<el-table-column label="操作" width="250">
 					<template slot-scope="scope">
 						<el-button
 							size="mini"
@@ -47,6 +47,7 @@
 						<el-button
 							size="mini"
 							type="danger"
+							style="margin-left: 10px"
 							@click="handleDelete(scope.$index, scope.row)"
 							>删除</el-button
 						>
@@ -63,7 +64,6 @@
 					<template slot="header">
 						<el-input
 							size="mini"
-							v-model="addUserForm.username"
 							placeholder="输入关键字搜索"
 						/>
 					</template>
@@ -89,12 +89,6 @@ export default {
 	data() {
 		return {
 			tableData: [],
-			addUserForm: {
-        username: '',
-        password: '',
-        email: '',
-        mobile: ''
-      },
 		}
 	},
 	components: {
@@ -142,7 +136,7 @@ export default {
 						message: "修改成功",
 					})
 					this.$store.dispatch("userManagement/updateAdmin", updateInfo)
-					row.is_admin = 1
+					this.$router.go(0)
 				})
 				.catch(() => {})
 		},
@@ -162,6 +156,7 @@ export default {
 						message: "删除成功!",
 					})
 					this.$store.dispatch("userManagement/deleteUser", deleteInfo)
+					this.$router.go(0)
 				})
 				.catch(() => {})
 		},
@@ -177,12 +172,12 @@ export default {
 				type: "warning",
 			})
 				.then(() => {
-					row.is_admin = "0"
 					this.$message({
 						type: "success",
 						message: "撤销成功!",
 					})
 					this.$store.dispatch("userManagement/updateAdmin", revokeInfo)
+					this.$router.go(0)
 				})
 				.catch(() => {})
 		},

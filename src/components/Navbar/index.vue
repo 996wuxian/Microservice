@@ -142,6 +142,7 @@ export default {
 			display: flex;
 			line-height: 0;
 			position: relative;
+			z-index: 999;
 			.logo {
 				width: 40px;
 				height: 40px;

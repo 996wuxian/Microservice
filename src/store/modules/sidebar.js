@@ -35,6 +35,29 @@ export default {
           }
         ],
       },
+      // {
+      //   title: "订单管理",
+      //   name: "orderManagement",
+      //   icon: "el-icon-edit-outline",
+      //   children: [
+      //     {
+      //       name: "packOrder",
+      //       title: "打包订单管理",
+      //     },
+      //     {
+      //       name: "expressOrder",
+      //       title: "快递订单管理",
+      //     },
+      //     {
+      //       name: "secondHandOrder",
+      //       title: "二手物品订单管理",
+      //     },
+      //     {
+      //       name: "otherOrder",
+      //       title: "其他订单管理"
+      //     }
+      //   ],
+      // },
     ],
     // 二级菜单开关
     SubmenuOpen: false,

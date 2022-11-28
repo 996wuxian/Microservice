@@ -121,7 +121,7 @@ export default {
 	.listItemChild {
 		background-color: #1f2d3d;
 		transition: background-color 0.3s;
-		padding: 0 45px;
+		padding: 0 30px;
 	}
 	.listItemChild:hover {
 		background-color: #001528;
