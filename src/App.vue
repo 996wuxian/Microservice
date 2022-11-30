@@ -1,8 +1,15 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+	<div id="app">
+		<router-view />
+	</div>
 </template>
 
-<style>
-</style>
+<script>
+export default {
+	// created() {
+	// 	if (this.$router.path !== "/layout/home") this.$router.replace("/layout/home")
+	// },
+}
+</script>
+
+<style></style>

@@ -19,7 +19,7 @@
 				class="table"
 			>
 				<template slot-scope="scope">
-					<span>{{ scope.row.packTitle }}</span>
+					<span>{{ scope.row.title }}</span>
 				</template>
 			</el-table-column>
 			<el-table-column
@@ -35,7 +35,7 @@
 			<el-table-column label="时间" width="200">
 				<template slot-scope="scope">
 					<i class="el-icon-time"></i>
-					<span style="margin-left: 10px">{{ scope.row.pack_data }}</span>
+					<span style="margin-left: 10px">{{ scope.row.date }}</span>
 				</template>
 			</el-table-column>
 			<el-table-column label="价格" width="100" align="center">
@@ -50,9 +50,9 @@
 					<span style="margin-left: 10px">{{ scope.row.email }}</span>
 				</template>
 			</el-table-column>
-      <el-table-column label="是否接单" width="100" align="center">
+			<el-table-column label="是否接单" width="100" align="center">
 				<template slot-scope="scope">
-					<span style="margin-left: 10px">{{ scope.row.is_packaged }}</span>
+					<span style="margin-left: 10px">{{ scope.row.is_order }}</span>
 				</template>
 			</el-table-column>
 			<el-table-column label="操作">
@@ -68,8 +68,8 @@
 							label-width="100px"
 							class="demo-ruleForm"
 						>
-							<el-form-item label="打包内容" prop="packTitle">
-								<el-input v-model="ruleForm.packTitle"></el-input>
+							<el-form-item label="打包内容" prop="title">
+								<el-input v-model="ruleForm.title"></el-input>
 							</el-form-item>
 							<el-form-item label="送达地方" prop="address">
 								<el-input v-model="ruleForm.address"></el-input>
@@ -115,13 +115,14 @@
 					<el-button
 						size="mini"
 						type="danger"
+						style="margin-left: 10px"
 						@click="handleDelete(scope.$index, scope.row)"
 						>删除</el-button
 					>
-          <el-button
+					<el-button
 						size="mini"
 						type="danger"
-						:disabled="scope.row.is_packaged === '0'"
+						:disabled="scope.row.is_order === '0'"
 						@click="cancelOrder(scope.$index, scope.row)"
 						>取消接单</el-button
 					>
@@ -138,8 +139,9 @@ export default {
 			editShow: false,
 			tableData: [],
 			user: "",
+			author: "",
 			ruleForm: {
-				packTitle: "",
+				title: "",
 				address: "",
 				date1: "",
 				date2: "",
@@ -147,7 +149,7 @@ export default {
 				id: "",
 			},
 			rules: {
-				packTitle: [
+				title: [
 					{ required: true, message: "请输入打包内容", trigger: "blur" },
 					{
 						min: 5,
@@ -208,9 +210,10 @@ export default {
 			// 动态拿到每行的id,由于table的scope.$index在el-dialog中失效的情况
 			this.ruleForm.id = row.id
 			// 让修改动态显示内容
-			this.ruleForm.packTitle = row.packTitle
+			this.ruleForm.title = row.title
 			this.ruleForm.address = row.address
 			this.ruleForm.price = row.price
+			this.author = row.email
 		},
 		// 格式化时间
 		formate(time) {
@@ -226,22 +229,27 @@ export default {
 		submitForm(formName) {
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
-					const username = JSON.parse(localStorage.getItem("admin"))
-					const data = {
-						id: this.ruleForm.id,
-						packTitle: this.ruleForm.packTitle,
-						address: this.ruleForm.address,
-						pack_data:
-							this.ruleForm.date1 + " " + this.formate(this.ruleForm.date2),
-						price: this.ruleForm.price,
-						email: this.user,
+					// 如果当前登录的用户等于发布的人的邮箱，才能修改
+					if (this.author === this.user) {
+						const data = {
+							id: this.ruleForm.id,
+							title: this.ruleForm.title,
+							address: this.ruleForm.address,
+							date:
+								this.ruleForm.date1 + " " + this.formate(this.ruleForm.date2),
+							price: this.ruleForm.price,
+							email: this.user,
+						}
+						// 发送请求
+						this.$store.dispatch("pack/updatePack", data)
+						this.$message.success("修改成功")
+						this.$router.go(0)
+						// 让dialog隐藏
+						this.editShow = false
+					} else {
+						this.$message.warning("无法修改他人的订单")
+						this.editShow = false
 					}
-					// 发送请求
-					this.$store.dispatch("pack/updatePack", data)
-					this.$message.success("修改成功")
-					this.$router.go(0)
-					// 让dialog隐藏
-					this.editShow = false
 				} else {
 					console.log("error submit!!")
 					return false
@@ -250,22 +258,28 @@ export default {
 		},
 		// 删除
 		async handleDelete(index, row) {
+			this.author = row.email
 			this.$confirm("是否删除", "提示", {
 				confirmButtonText: "确定",
 				cancelButtonText: "取消",
 				type: "warning",
 			})
 				.then(() => {
-					const data = {
-						id: row.id,
-						email: this.user,
+					if (this.author === this.user) {
+						const data = {
+							id: row.id,
+							email: this.user,
+						}
+						this.$store.dispatch("pack/deletePack", data)
+						this.$message({
+							type: "success",
+							message: "删除成功!",
+						})
+						this.$router.go(0)
+					} else {
+						this.$message.warning("无法删除他人的订单")
+						this.editShow = false
 					}
-					this.$store.dispatch("pack/deletePack", data)
-					this.$message({
-						type: "success",
-						message: "删除成功!",
-					})
-					this.$router.go(0)
 				})
 				.catch(() => {
 					this.$message({
@@ -274,31 +288,36 @@ export default {
 					})
 				})
 		},
-    async cancelOrder(index, row) {
-			this.$confirm("是否取消接单", "提示", {
-				confirmButtonText: "确定",
-				cancelButtonText: "取消",
-				type: "warning",
-			})
-				.then(() => {
-					const data = {
-						id: row.id,
-						email: this.user,
-            is_packaged: "0"
-					}
-					this.$store.dispatch("pack/updatePack", data)
-					this.$message({
-						type: "success",
-						message: "撤销成功!",
+		// 取消接单
+		async cancelOrder(index, row) {
+			this.author = row.email
+			if (this.user === row.email) {
+				this.$message.warning("无法取消自己的单号")
+			} else {
+				this.$confirm("是否取消接单", "提示", {
+					confirmButtonText: "确定",
+					cancelButtonText: "取消",
+					type: "warning",
+				}).then(() => {
+						const data = {
+							id: row.id,
+							email: row.email,
+							orderUser: this.user,
+							is_order: "0",
+						}
+						this.$store.dispatch("pack/updatePack", data)
+						this.$message({
+							type: "success",
+							message: "撤销成功!",
+						})
+						this.$router.go(0)
+					}).catch(() => {
+						this.$message({
+							type: "info",
+							message: "取消",
+						})
 					})
-					this.$router.go(0)
-				})
-				.catch(() => {
-					this.$message({
-						type: "info",
-						message: "取消",
-					})
-				})
+			}
 		},
 	},
 	mounted() {

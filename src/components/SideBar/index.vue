@@ -39,6 +39,7 @@ export default {
 	data() {
 		return {
 			navItem: [],
+			is_admin: ''
 		}
 	},
 	methods: {
@@ -69,7 +70,13 @@ export default {
 		},
 	},
 	mounted() {
-		this.navItem = this.$store.state.sidebar.NavItem
+		this.is_admin = JSON.parse(localStorage.getItem("admin")).data.result.is_admin
+		if (this.is_admin) {
+			this.navItem = this.$store.state.sidebar.NavItem
+		} else {
+			this.navItem = this.$store.state.sidebar.NavItem
+			this.navItem.splice(1,1)
+		}
 	},
 }
 </script>

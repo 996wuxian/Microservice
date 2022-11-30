@@ -3,7 +3,7 @@
 		<el-table :data="tableData" style="width: 100%">
 			<el-table-column
 				label="id"
-				width="100"
+				width="120"
 				align="center"
 				:show-overflow-tooltip="true"
 			>
@@ -13,7 +13,7 @@
 			</el-table-column>
 			<el-table-column
 				label="标题"
-				width="150"
+				width="300"
 				align="center"
 				:show-overflow-tooltip="true"
 				class="table"
@@ -22,37 +22,16 @@
 					<span>{{ scope.row.title }}</span>
 				</template>
 			</el-table-column>
-			<el-table-column
-				label="地址"
-				width="200"
-				align="center"
-				:show-overflow-tooltip="true"
-			>
-				<template slot-scope="scope">
-					<span style="margin-left: 10px">{{ scope.row.address }}</span>
-				</template>
-			</el-table-column>
-			<el-table-column label="时间" width="200">
+			<el-table-column label="时间" width="250">
 				<template slot-scope="scope">
 					<i class="el-icon-time"></i>
 					<span style="margin-left: 10px">{{ scope.row.date }}</span>
 				</template>
 			</el-table-column>
-			<el-table-column label="价格" width="100" align="center">
-				<template slot-scope="scope">
-					<i class="">￥</i>
-					<span style="margin-left: 10px">{{ scope.row.price }}</span>
-				</template>
-			</el-table-column>
-			<el-table-column label="用户" width="200">
+			<el-table-column label="用户" width="250">
 				<template slot-scope="scope">
 					<i class="el-icon-message"></i>
 					<span style="margin-left: 10px">{{ scope.row.email }}</span>
-				</template>
-			</el-table-column>
-			<el-table-column label="是否接单" width="100" align="center">
-				<template slot-scope="scope">
-					<span style="margin-left: 10px">{{ scope.row.is_order }}</span>
 				</template>
 			</el-table-column>
 			<el-table-column label="操作">
@@ -65,16 +44,13 @@
 							:model="ruleForm"
 							:rules="rules"
 							ref="ruleForm"
-							label-width="100px"
+							label-width="150px"
 							class="demo-ruleForm"
 						>
-							<el-form-item label="打包内容" prop="title">
+							<el-form-item label="标题" prop="title">
 								<el-input v-model="ruleForm.title"></el-input>
 							</el-form-item>
-							<el-form-item label="送达地方" prop="address">
-								<el-input v-model="ruleForm.address"></el-input>
-							</el-form-item>
-							<el-form-item label="订单时间" required>
+							<el-form-item label="发布时间" required>
 								<el-col :span="11">
 									<el-form-item prop="date1">
 										<el-date-picker
@@ -101,9 +77,6 @@
 									</el-form-item>
 								</el-col>
 							</el-form-item>
-							<el-form-item label="金额" prop="price">
-								<el-input v-model="ruleForm.price"></el-input>
-							</el-form-item>
 							<el-form-item>
 								<el-button type="primary" @click="submitForm('ruleForm')"
 									>修改</el-button
@@ -117,15 +90,8 @@
 						type="danger"
 						style="margin-left: 10px"
 						@click="handleDelete(scope.$index, scope.row)"
-						>删除</el-button
-					>
-					<el-button
-						size="mini"
-						type="danger"
-						:disabled="scope.row.is_order === '0'"
-						@click="cancelOrder(scope.$index, scope.row)"
-						>取消接单</el-button
-					>
+						>删除
+					</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -134,18 +100,18 @@
 
 <script>
 export default {
+	name: "otherContent",
 	data() {
 		return {
 			editShow: false,
 			tableData: [],
 			user: "",
-			author: '',
+			author: "",
 			ruleForm: {
 				title: "",
 				address: "",
 				date1: "",
 				date2: "",
-				price: "",
 				id: "",
 			},
 			rules: {
@@ -183,8 +149,6 @@ export default {
 						trigger: "change",
 					},
 				],
-				price: [{ required: true, message: "请输入金额", trigger: "blur" }],
-				desc: [{ required: true, message: "请填写留言", trigger: "blur" }],
 			},
 			// 判断日期的
 			pickerOptions: {
@@ -199,9 +163,9 @@ export default {
 		}
 	},
 	methods: {
-		// 获取所有打包信息
-		async getExpress() {
-			const res = await this.$store.dispatch("express/getExpress")
+		// 获取所有发布信息
+		async getOther() {
+			const res = await this.$store.dispatch("other/getInfo")
 			this.tableData = res.result
 		},
 		// 修改按钮
@@ -240,7 +204,7 @@ export default {
 							email: this.user,
 						}
 						// 发送请求
-						this.$store.dispatch("express/updateExpress", data)
+						this.$store.dispatch("other/updateInfo", data)
 						this.$message.success("修改成功")
 						this.$router.go(0)
 						// 让dialog隐藏
@@ -269,7 +233,7 @@ export default {
 							id: row.id,
 							email: this.user,
 						}
-						this.$store.dispatch("express/deleteExpress", data)
+						this.$store.dispatch("other/deleteInfo", data)
 						this.$message({
 							type: "success",
 							message: "删除成功!",
@@ -300,11 +264,10 @@ export default {
 					.then(() => {
 						const data = {
 							id: row.id,
-							email: row.email,
-							orderUser: this.user,
+							email: this.user,
 							is_order: "0",
 						}
-						this.$store.dispatch("express/updateExpress", data)
+						this.$store.dispatch("other/updateInfo", data)
 						this.$message({
 							type: "success",
 							message: "撤销成功!",
@@ -321,7 +284,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.getExpress()
+		this.getOther()
 		// 获取localStorage里的用户名
 		this.user = JSON.parse(localStorage.getItem("admin")).data.result.username
 	},

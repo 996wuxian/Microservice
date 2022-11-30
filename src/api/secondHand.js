@@ -1,29 +1,29 @@
 import axios from '@/utils/request'
 
-export class PackApi {
-  addPack(data) {
+export class SecondHandApi {
+  addSecond(data) {
     return axios({
-      url: '/packaged/addPack',
+      url: '/secondHand/addSecond',
       method: 'post',
       data
     })
   }
-  getPack() {
+  getSecond() {
     return axios({
-      url: '/packaged/getPack',
+      url: '/secondHand/getSecond',
       method: 'get',
     })
   }
-  updatePack(data) {
+  updateSecond(data) {
     return axios({
-      url: '/packaged/updatePack',
+      url: '/secondHand/updateSecond',
       method: 'post',
       data
     })
   }
-  deletePack(data) {
+  deleteSecond(data) {
     return axios({
-      url: '/packaged/deletePack',
+      url: '/secondHand/deleteSecond',
       method: 'post',
       data
     })

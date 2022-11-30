@@ -11,7 +11,7 @@
 				label-width="100px"
 				class="demo-ruleForm"
 			>
-				<el-form-item label="快递信息" prop="title">
+				<el-form-item label="物品信息" prop="title">
 					<el-input v-model.trim="ruleForm.title"></el-input>
 				</el-form-item>
 				<el-form-item label="送达地方" prop="address">
@@ -60,7 +60,7 @@
 
 <script>
 export default {
-  name:'addExpress',
+  name:'addSecondHand',
 	components: {
 	},
 	data() {
@@ -136,7 +136,7 @@ export default {
 						email: username.data.result.username,
 					}
 					// 发送请求
-					this.$store.dispatch("express/addExpress", data)
+					this.$store.dispatch("secondHand/addSecond", data)
 					// 提交后重置内容
 					this.$refs[formName].resetFields()
 					this.$message.success("添加成功")

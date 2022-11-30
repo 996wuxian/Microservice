@@ -11,8 +11,8 @@
 				label-width="100px"
 				class="demo-ruleForm"
 			>
-				<el-form-item label="打包内容" prop="packTitle">
-					<el-input v-model.trim="ruleForm.packTitle"></el-input>
+				<el-form-item label="打包内容" prop="title">
+					<el-input v-model.trim="ruleForm.title"></el-input>
 				</el-form-item>
 				<el-form-item label="送达地方" prop="address">
 					<el-input v-model.trim="ruleForm.address"></el-input>
@@ -67,7 +67,7 @@ export default {
 		return {
 			dialogVisible: false,
 			ruleForm: {
-				packTitle: "",
+				title: "",
 				address: "",
 				date1: "",
 				date2: "",
@@ -75,7 +75,7 @@ export default {
 				desc: "",
 			},
 			rules: {
-				packTitle: [
+				title: [
 					{ required: true, message: "请输入打包内容", trigger: "blur" },
 					{
 						min: 5,
@@ -131,9 +131,9 @@ export default {
 				if (valid) {
 					const username = JSON.parse(localStorage.getItem("admin"))
 					const data = {
-						packTitle: this.ruleForm.packTitle,
+						title: this.ruleForm.title,
 						address: this.ruleForm.address,
-						pack_data:
+						date:
 							this.ruleForm.date1 + " " + this.formate(this.ruleForm.date2),
 						price: this.ruleForm.price,
 						email: username.data.result.username,

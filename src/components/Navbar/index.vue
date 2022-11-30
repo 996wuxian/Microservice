@@ -92,6 +92,10 @@ export default {
 			})
 			this.$message.success('退出登录成功')
 			localStorage.removeItem('admin')
+			// 删除所有sessionStorage
+			sessionStorage.clear()
+			// 让页面刷新
+			this.$router.go(0)
 		}
 	},
 	mounted() {

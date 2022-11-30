@@ -11,13 +11,10 @@
 				label-width="100px"
 				class="demo-ruleForm"
 			>
-				<el-form-item label="快递信息" prop="title">
+				<el-form-item label="信息内容" prop="title">
 					<el-input v-model.trim="ruleForm.title"></el-input>
 				</el-form-item>
-				<el-form-item label="送达地方" prop="address">
-					<el-input v-model.trim="ruleForm.address"></el-input>
-				</el-form-item>
-				<el-form-item label="订单时间" required>
+				<el-form-item label="发送时间" required>
 					<el-col :span="11">
 						<el-form-item prop="date1">
 							<el-date-picker
@@ -44,9 +41,6 @@
 						</el-form-item>
 					</el-col>
 				</el-form-item>
-				<el-form-item label="金额" prop="price">
-					<el-input v-model="ruleForm.price"></el-input>
-				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="submitForm('ruleForm')"
 						>立即创建</el-button
@@ -60,7 +54,7 @@
 
 <script>
 export default {
-  name:'addExpress',
+  name:'addInfo',
 	components: {
 	},
 	data() {
@@ -68,23 +62,12 @@ export default {
 			dialogVisible: false,
 			ruleForm: {
 				title: "",
-				address: "",
 				date1: "",
 				date2: "",
-				price: "",
 			},
 			rules: {
 				title: [
-					{ required: true, message: "请输入快递内容", trigger: "blur" },
-					{
-						min: 5,
-						max: 80,
-						message: "长度在 5 到 80 个字符",
-						trigger: "blur",
-					},
-				],
-				address: [
-					{ required: true, message: "请输入地址", trigger: "blur" },
+					{ required: true, message: "请输入内容", trigger: "blur" },
 					{
 						min: 5,
 						max: 80,
@@ -108,7 +91,6 @@ export default {
 						trigger: "change",
 					},
 				],
-				price: [{ required: true, message: "请输入金额", trigger: "blur" }],
 			},
 			// 判断日期的
 			pickerOptions: {
@@ -129,14 +111,12 @@ export default {
 					const username = JSON.parse(localStorage.getItem("admin"))
 					const data = {
 						title: this.ruleForm.title,
-						address: this.ruleForm.address,
 						date:
 							this.ruleForm.date1 + " " + this.formate(this.ruleForm.date2),
-						price: this.ruleForm.price,
 						email: username.data.result.username,
 					}
 					// 发送请求
-					this.$store.dispatch("express/addExpress", data)
+					this.$store.dispatch("other/addInfo", data)
 					// 提交后重置内容
 					this.$refs[formName].resetFields()
 					this.$message.success("添加成功")

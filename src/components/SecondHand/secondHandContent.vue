@@ -139,7 +139,7 @@ export default {
 			editShow: false,
 			tableData: [],
 			user: "",
-			author: '',
+			author: "",
 			ruleForm: {
 				title: "",
 				address: "",
@@ -201,7 +201,7 @@ export default {
 	methods: {
 		// 获取所有打包信息
 		async getExpress() {
-			const res = await this.$store.dispatch("express/getExpress")
+			const res = await this.$store.dispatch("secondHand/getSecond")
 			this.tableData = res.result
 		},
 		// 修改按钮
@@ -240,7 +240,7 @@ export default {
 							email: this.user,
 						}
 						// 发送请求
-						this.$store.dispatch("express/updateExpress", data)
+						this.$store.dispatch("secondHand/updateSecond", data)
 						this.$message.success("修改成功")
 						this.$router.go(0)
 						// 让dialog隐藏
@@ -269,7 +269,7 @@ export default {
 							id: row.id,
 							email: this.user,
 						}
-						this.$store.dispatch("express/deleteExpress", data)
+						this.$store.dispatch("secondHand/deleteSecond", data)
 						this.$message({
 							type: "success",
 							message: "删除成功!",
@@ -304,7 +304,7 @@ export default {
 							orderUser: this.user,
 							is_order: "0",
 						}
-						this.$store.dispatch("express/updateExpress", data)
+						this.$store.dispatch("secondHand/updateSecond", data)
 						this.$message({
 							type: "success",
 							message: "撤销成功!",

@@ -24,7 +24,7 @@ import forgotPassword from '@/components/User/forgotPassword.vue'
       userLogin,
       createUser,
       forgotPassword
-    }
+    },
  }
 </script>
 

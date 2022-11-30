@@ -1,29 +1,29 @@
 import axios from '@/utils/request'
 
-export class PackApi {
-  addPack(data) {
+export class OtherApi {
+  addInfo(data) {
     return axios({
-      url: '/packaged/addPack',
+      url: '/other/addInfo',
       method: 'post',
       data
     })
   }
-  getPack() {
+  getInfo() {
     return axios({
-      url: '/packaged/getPack',
+      url: 'other/getInfo',
       method: 'get',
     })
   }
-  updatePack(data) {
+  updateInfo(data) {
     return axios({
-      url: '/packaged/updatePack',
+      url: 'other/updateInfo',
       method: 'post',
       data
     })
   }
-  deletePack(data) {
+  deleteInfo(data) {
     return axios({
-      url: '/packaged/deletePack',
+      url: 'other/deleteInfo',
       method: 'post',
       data
     })
