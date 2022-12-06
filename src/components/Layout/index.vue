@@ -1,16 +1,24 @@
 <template>
   <div class="layout">
     <div class="sidebar" :class="sidebarIndent ? 'sideReduce' : 'sidebar'"><sidebar></sidebar></div>
-    <div class="pageContent" :class="sidebarIndent ? 'pageContentReduce' : 'pageContent'"><router-view /></div>
+    <div class="pageContent" :class="sidebarIndent ? 'pageContentReduce' : 'pageContent'">
+      <navbar></navbar>
+      <crumbs></crumbs>
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
   import sidebar from '../SideBar'
+  import navbar from "@/components/Navbar"
+  import crumbs from "@/components/Crumbs"
 
   export default {
     components: {
-      sidebar
+      sidebar,
+      navbar,
+      crumbs
     },
     computed: {
       sidebarIndent() {

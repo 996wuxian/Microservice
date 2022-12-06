@@ -138,6 +138,7 @@ export default {
 						price: this.ruleForm.price,
 						email: username.data.result.username,
 					}
+					console.log(data);
 					// 发送请求
 					this.$store.dispatch("pack/addPack", data)
 					// 提交后重置内容

@@ -19,19 +19,19 @@
 			</div>
 			<div class="card-footer">
 				<el-button
-					v-if="item.is_order === '0'"
+					v-if="item.is_order === '否'"
 					type="text"
 					@click.stop="orderBtn(item, index)"
 					class="card-button"
-					:disabled="item.is_order === '1'"
+					:disabled="item.is_order === '是'"
 					>接单</el-button
 				>
 				<el-button
-					v-if="item.is_order === '1'"
+					v-if="item.is_order === '是'"
 					type="text"
 					@click.stop="orderBtn(item, index)"
 					class="card-button"
-					:disabled="item.is_order === '1'"
+					:disabled="item.is_order === '是'"
 					>已接单</el-button
 				>
 			</div>
@@ -46,10 +46,10 @@
 					<div class="cardTitle">标题：{{ cardInfo.title }}</div>
 					<div class="cardText">地址：{{ cardInfo.address }}</div>
 					<div class="cardDate">时间：{{ cardInfo.date }}</div>
-					<div class="cardDate" v-show="cardInfo.is_order === '1'">
+					<div class="cardDate" v-show="cardInfo.is_order === '是'">
 						接单情况：已接单
 					</div>
-					<div class="cardDate" v-show="cardInfo.is_order !== '1'">
+					<div class="cardDate" v-show="cardInfo.is_order !== '是'">
 						接单情况：未接单
 					</div>
 				</div>

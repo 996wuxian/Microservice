@@ -3,7 +3,7 @@
 		<el-table :data="tableData" style="width: 100%">
 			<el-table-column
 				label="id"
-				width="120"
+				width="200"
 				align="center"
 				:show-overflow-tooltip="true"
 			>
@@ -13,8 +13,7 @@
 			</el-table-column>
 			<el-table-column
 				label="标题"
-				width="300"
-				align="center"
+				width="250"
 				:show-overflow-tooltip="true"
 				class="table"
 			>
@@ -22,13 +21,13 @@
 					<span>{{ scope.row.title }}</span>
 				</template>
 			</el-table-column>
-			<el-table-column label="时间" width="250">
+			<el-table-column label="时间" width="300">
 				<template slot-scope="scope">
 					<i class="el-icon-time"></i>
 					<span style="margin-left: 10px">{{ scope.row.date }}</span>
 				</template>
 			</el-table-column>
-			<el-table-column label="用户" width="250">
+			<el-table-column label="用户" width="300">
 				<template slot-scope="scope">
 					<i class="el-icon-message"></i>
 					<span style="margin-left: 10px">{{ scope.row.email }}</span>

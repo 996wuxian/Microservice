@@ -3,7 +3,7 @@
 		<el-table :data="tableData" style="width: 100%">
 			<el-table-column
 				label="id"
-				width="100"
+				width="80"
 				align="center"
 				:show-overflow-tooltip="true"
 			>
@@ -24,7 +24,7 @@
 			</el-table-column>
 			<el-table-column
 				label="地址"
-				width="200"
+				width="150"
 				align="center"
 				:show-overflow-tooltip="true"
 			>
@@ -122,9 +122,13 @@
 					<el-button
 						size="mini"
 						type="danger"
-						:disabled="scope.row.is_order === '0'"
+						:disabled="scope.row.is_order === '否'"
 						@click="cancelOrder(scope.$index, scope.row)"
 						>取消接单</el-button
+					>
+					<el-button size="mini"
+					:disabled="scope.row.is_order === '否'"
+						>完成接单</el-button
 					>
 				</template>
 			</el-table-column>

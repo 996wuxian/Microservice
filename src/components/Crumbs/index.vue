@@ -1,10 +1,9 @@
 <template>
   <div class="crumbs">
     <div 
-      class="crumbsItem" 
       v-for="(item,index) in crumbsTitle" :key="index" 
-      :class="item.changeBg ? 'addBg' : 'crumbsItem'"
-      @click="crumbsClick(item)"
+      :class="{'addBg': item.changeBg, 'crumbsItem': true}"
+      @click="crumbsClick(item, index)"
     >
       <div v-if="item.changeBg" class="circle"></div>
       {{item.title}}
@@ -26,8 +25,13 @@
     mounted() {
       this.crumbsTitle = this.$store.state.crumbs.crumbsArray
     },
+    watch: {
+      $route() { 
+        this.crumbsTitle = this.$store.state.crumbs.crumbsArray
+      }
+    },
     methods: {
-      crumbsClick(item) {
+      crumbsClick(item, index) {
         this.$store.commit('crumbs/initCrumbsTitle',item)
         this.$router.push({
           name:item.name

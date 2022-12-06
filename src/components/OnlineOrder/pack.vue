@@ -19,19 +19,19 @@
 			</div>
 			<div class="card-footer">
 				<el-button
-					v-if="item.is_order === '0'"
+					v-if="item.is_order === '否'"
 					type="text"
 					@click.stop="orderBtn(item, index)"
 					class="card-button"
-					:disabled="item.is_order === '1'"
+					:disabled="item.is_order === '是'"
 					>接单</el-button
 				>
 				<el-button
-					v-if="item.is_order === '1'"
+					v-if="item.is_order === '是'"
 					type="text"
 					@click.stop="orderBtn(item, index)"
 					class="card-button"
-					:disabled="item.is_order === '1'"
+					:disabled="item.is_order === '是'"
 					>已接单</el-button
 				>
 			</div>
@@ -46,10 +46,10 @@
 					<div class="cardTitle">标题：{{ cardInfo.title }}</div>
 					<div class="cardText">地址：{{ cardInfo.address }}</div>
 					<div class="cardDate">时间：{{ cardInfo.date }}</div>
-					<div class="cardDate" v-show="cardInfo.is_order === '1'">
+					<div class="cardDate" v-show="cardInfo.is_order === '是'">
 						接单情况：已接单
 					</div>
-					<div class="cardDate" v-show="cardInfo.is_order !== '1'">
+					<div class="cardDate" v-show="cardInfo.is_order !== '否'">
 						接单情况：未接单
 					</div>
 				</div>
@@ -77,8 +77,8 @@ export default {
 		}
 	},
 	methods: {
-		async getExpress() {
-			const res = await this.$store.dispatch("express/getExpress")
+		async getPack() {
+			const res = await this.$store.dispatch("pack/getPack")
 			this.tableData = res.result
 		},
 		// 接单按钮
@@ -93,14 +93,14 @@ export default {
 					type: "warning",
 				})
 					.then(() => {
-						this.is_order = 1
+						this.is_order = '是'
 						const data = {
 							id: item.id,
 							email: item.email,
 							orderUser: this.user,
 							is_order: this.is_order,
 						}
-						this.$store.dispatch("express/updateExpress", data)
+						this.$store.dispatch("pack/updatePack", data)
 						this.$message({
 							type: "success",
 							message: "接单成功!",
@@ -122,7 +122,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.getExpress()
+		this.getPack()
 		this.user = JSON.parse(localStorage.getItem("admin")).data.result.username
 	},
 }
@@ -136,16 +136,16 @@ export default {
 		margin: 20px 0 0 40px;
 		width: 184px;
 		padding: 0.8em;
-		background: #65849f;
+		background: #a1afc9;
 		position: relative;
 		overflow: visible;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 		transition: all 0.3s;
 		border-radius: 10px;
-		color: #fff;
+		color: rgb(227, 249, 253);
 		.title {
 			display: flex;
-			color: #fff;
+			color: #e3f9fd;
 			justify-content: space-between;
 			font-size: 20px;
 		}
@@ -173,7 +173,7 @@ export default {
 			font-weight: 900;
 			font-size: 1em;
 			line-height: 1.5;
-			color: #fff;
+			color: #e3f9fd;
 		}
 		.text-body {
 			font-size: 0.9em;
@@ -194,7 +194,7 @@ export default {
 		text-align: center;
 		/*Button*/
 		.card-button {
-			border: 1px solid #fff;
+			border: 1px solid #e3f9fd;
 			width: 90%;
 			height: 35px;
 			display: block;
@@ -202,13 +202,13 @@ export default {
 			padding: 0.3em;
 			cursor: pointer;
 			border-radius: 10px;
-			color: #fff;
+			color: #e3f9fd;
 			transition: 0.3s ease-in-out;
 		}
 		.card-button:hover {
-			border: 1px solid #fff;
-			background-color: #fff;
-			color: #65849f;
+			border: 1px solid #e3f9fd;
+			background-color: #e3f9fd;
+			color: #a1afc9;
 		}
 	}
 }

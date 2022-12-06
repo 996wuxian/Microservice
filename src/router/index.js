@@ -19,9 +19,6 @@ const routes = [
     path:'/login',
     name: 'login',
     component: () => import('@/views/Login'),
-    // meta: {
-    //   requireAuth: true
-    // }
   },
   {
     path:'/layout',
@@ -88,7 +85,16 @@ const routes = [
             }
           },
         ]
-      }
+      },
+      // 在线接单
+      {
+        path:'onlineOrder',
+        name:'onlineOrder',
+        component: () => import('@/views/OnlineOrder'),
+        meta: {
+          title: '在线接单'
+        }
+      },
     ]
   }
 ]
@@ -101,7 +107,7 @@ const router = new VueRouter({
 // 获取路径
 router.beforeEach((to, from, next) => {
   // console.log(from.name)  //从哪个路由来
-  // console.log(to.name)  //去到哪个路由
+  // console.log(to)  //去到哪个路由
   // 获取sidebar路由跳转时携带的路径
   const { matched } = to
   const path = []

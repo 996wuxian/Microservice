@@ -1,7 +1,7 @@
 <template>
 	<div class="sidebarPage">
 		<div v-for="(item, index) in navItem" :key="index" class="nav">
-			<div class="navItem" @click="toggle(item)">
+			<div class="navItem" @click.stop="toggle(item)">
 				<!-- 图标 -->
 				<div class="icon"><i :class="item.icon"></i></div>
 				<!-- title -->
@@ -23,7 +23,7 @@
 						v-for="(child, i) in item.children"
 						:key="i"
 						class="listItemChild"
-						@click="toggle(child)"
+						@click.stop="toggle(child)"
 					>
 						<div>{{ child.title }}</div>
 					</div>
@@ -55,7 +55,7 @@ export default {
 				// 添加delete属性,由于state里已经定义了首页和文档的，这个是后续添加上的
 				item.deleteIcon = true
 				this.$store.commit("crumbs/addCrumbsItem", item)
-				this.$store.commit("crumbs/initCrumbsTitle", item)
+				// this.$store.commit("crumbs/initCrumbsTitle", item)
 			}
 		},
 	},
@@ -70,6 +70,7 @@ export default {
 		},
 	},
 	mounted() {
+		// 判断是否是管理员登录sidebar要显示的部分
 		this.is_admin = JSON.parse(localStorage.getItem("admin")).data.result.is_admin
 		if (this.is_admin) {
 			this.navItem = this.$store.state.sidebar.NavItem

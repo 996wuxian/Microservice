@@ -186,6 +186,7 @@ export default {
 				code: this.code,
 				codeDate: time
 			}
+			console.log(data);
 			if (this.checkEmail && this.checkPassword) {
 				if (this.code == "") {
 					this.$message.warning("请输入验证码")

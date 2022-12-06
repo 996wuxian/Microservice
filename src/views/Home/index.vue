@@ -1,99 +1,59 @@
 <template>
 	<div class="home">
-		<navbar></navbar>
-		<crumbs></crumbs>
 		<div class="content">
-			<el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
-				<el-tab-pane label="打包" name="pack"><pack></pack></el-tab-pane>
-				<el-tab-pane label="快递" name="express"><express></express></el-tab-pane>
-				<el-tab-pane label="二手物品" name="secondHand"><secondHand></secondHand></el-tab-pane>
-				<el-tab-pane label="其他" name="other"><other></other></el-tab-pane>
-			</el-tabs>
+			<div class="count">
+				<div>
+					<i class="el-icon-s-custom" style="color: #40c9c6"></i>
+					<span style="color: #40c9c6">用户总人数</span>
+					<span>{{ userCount }}</span>
+				</div>
+				<div>
+					<i class="el-icon-bell" style="color: #36a3f7"></i>
+					<span style="color: #36a3f7">发布订单总数</span>
+					<span>{{ orderCount }}</span>
+				</div>
+				<div>
+					<i class="el-icon-message-solid" style="color: #f4516c"></i>
+					<span style="color: #f4516c">订单成交总数</span>
+					<span>123</span>
+				</div>
+				<div>
+					<i class="el-icon-time" style="color: #34bfa3"></i>
+					<span style="color: #34bfa3">项目运行时间</span>
+					<span>123</span>
+				</div>
+			</div>
+			<echarts></echarts>
 		</div>
 	</div>
 </template>
 
 <script>
-import navbar from "@/components/Navbar"
-import crumbs from "@/components/Crumbs"
-import pack from "@/components/Home/pack.vue"
-import express from "@/components/Home/express.vue"
-import secondHand from "@/components/Home/secondHand.vue"
-import other from "@/components/Home/other.vue"
+import echarts from "@/components/Echarts"
 
 export default {
 	data() {
 		return {
-			tableData: [],
-			user: "",
-			is_packaged: 0,
-			detailsShow: false,
-			cardInfo: {},
-			activeName: 'pack'
+			userCount: "",
+			orderCount: "",
+			change: 0,
 		}
 	},
 	components: {
-		navbar,
-		crumbs,
-		pack,
-		express,
-		secondHand,
-		other
+		echarts
 	},
-	methods: {
-		async getPack() {
-			const res = await this.$store.dispatch("pack/getPack")
-			this.tableData = res.result
-		},
-		handleClick(tab, event) {
-			// console.log(tab, event)
-			sessionStorage.setItem('handle_order_name', tab.name)
-		},
-		// 接单按钮
-		orderBtn(item, index) {
-			this.$confirm("是否接单?", "提示", {
-				confirmButtonText: "确定",
-				cancelButtonText: "取消",
-				type: "warning",
-			})
-				.then(() => {
-					this.is_packaged = 1
-					const data = {
-						id: item.id,
-						email: this.user,
-						is_packaged: this.is_packaged,
-					}
-					this.$store.dispatch("pack/updatePack", data)
-					this.$message({
-						type: "success",
-						message: "接单成功!",
-					})
-					this.$router.go(0)
-				})
-				.catch(() => {
-					this.$message({
-						type: "info",
-						message: "已取消接单",
-					})
-				})
-		},
-		// card详情
-		cardShow(item, index) {
-			this.detailsShow = true
-			this.cardInfo = item
-		},
-	},
-	created () {
-		// console.log(sessionStorage.getItem('handle_order_name'));
-    if (sessionStorage.getItem('handle_order_name') == undefined) {
-      this.activeName = 'pack'
-    } else {
-      this.activeName = sessionStorage.getItem('handle_order_name')
-    }
-  },
-	mounted() {
-		this.getPack()
-		this.user = JSON.parse(localStorage.getItem("admin")).data.result.username
+	async created() {
+		// 获取用户总数
+		this.userCount = (
+			await this.$store.dispatch("userManagement/getAllUserInfo")
+		).result.length
+		// 获取订单总数
+		this.orderCount =
+			(await this.$store.dispatch("express/getExpress")).result.length +
+			(await this.$store.dispatch("other/getInfo")).result.length +
+			(await this.$store.dispatch("pack/getPack")).result.length +
+			(await this.$store.dispatch("secondHand/getSecond")).result.length
+		// 获取订单成交总数
 	},
 }
 </script>
@@ -104,6 +64,58 @@ export default {
 		width: 100%;
 		height: 85vh;
 		overflow: auto;
+		background-color: #f0f2f5;
+		.count {
+			width: 1250px;
+			margin: 50px auto;
+			height: 108px;
+			display: flex;
+			justify-content: space-between;
+			div {
+				width: 281px;
+				height: 108px;
+				background: #fff;
+				border-radius: 10px;
+				position: relative;
+				box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
+				cursor: pointer;
+				i {
+					font-size: 60px;
+					display: block;
+					width: 90px;
+					height: 90px;
+					text-align: center;
+					line-height: 90px;
+					margin: 10px;
+					border-radius: 5px;
+					background-color: #fff;
+					transition: all 0.3s;
+				}
+				i:hover {
+					background-color: #40c9c6;
+					transition: all 0.3s;
+					color: #fff !important;
+				}
+				span:nth-of-type(1) {
+					position: absolute;
+					top: 20px;
+					right: 20px;
+					font-size: 18px;
+				}
+				span:nth-of-type(2) {
+					position: absolute;
+					bottom: 32px;
+					right: 20px;
+					color: #8c8c8c;
+				}
+			}
+		}
+		.echarts {
+			width: 1250px;
+			height: 400px;
+			margin: 0 auto;
+			background-color: #ffffff;
+		}
 	}
 }
 </style>

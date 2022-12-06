@@ -18,7 +18,6 @@ export default {
       if (data && data.title) {
         title = data.title
       } else {
-        console.error(error);
         return
       }
       for (let i = 0; i < state.crumbsArray.length; i++) {

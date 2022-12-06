@@ -10,6 +10,9 @@
 					{{ item.title }}
 					<span v-show="CrumbsIsShow(item, i)"> / </span>
 				</div>
+				<!-- <div class="title">
+					{{ title }}
+				</div> -->
 			</div>
 			<!-- 个人中心板块 -->
 			<div class="personal" @click="btnPersonal">
@@ -30,7 +33,6 @@
 						<div class="list" v-show="rotate">
 							<div @click="person">个人中心</div>
 							<div @click="toHome">首页</div>
-							<div><a href="">项目地址</a></div>
 							<div class="loginOut" @click="loginOut">退出登录</div>
 						</div>
 					</div>
@@ -47,11 +49,20 @@ export default {
 	name: "navbar",
 	data() {
 		return {
-			title: "",
+			title: "首页",
 			flipBtn: false,
 			rotate: false,
 			currPath: [], // 用来装vuex存的路径信息
+			crumbsTitle:[]
 		}
+	},
+	watch: {
+		$route() {
+			this.currPath = this.$store.state.sidebar.currPath
+		}
+	},
+	created() {
+		this.currPath = this.$store.state.sidebar.currPath
 	},
 	methods: {
 		// 缩进按钮
@@ -96,15 +107,20 @@ export default {
 			sessionStorage.clear()
 			// 让页面刷新
 			this.$router.go(0)
-		}
+		},
 	},
+	// computed: {
+	// 	getTitle() {
+	// 		this.currPath = this.$store.state.sidebar.currPath
+	// 		console.log(this.currPath);
+	// 	}
+	// },
 	mounted() {
-		if(this.$route.meta.title) {
-		  this.title = this.$route.meta.title
-		}
+		// if(this.$route.meta.title) {
+		//   this.title = this.$route.meta.title
+		// }
 		// // 当页面加载完后，让vuex里存的路径给当前组件
-		this.currPath = this.$store.state.sidebar.currPath
-	},
+	}
 }
 </script>
 
@@ -216,7 +232,7 @@ export default {
 					}
 				}
 				.maskOpen {
-					height: 140px;
+					height: 100px;
 					transition: all 0.3s;
 					overflow: hidden;
 				}

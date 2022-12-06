@@ -1,7 +1,5 @@
 <template>
 	<div class="userManagement">
-		<div class="nav"><navbar></navbar></div>
-		<div class="crumbs"><crumbs></crumbs></div>
 		<div class="content">
 			<el-table :data="tableData" style="width: 100%" class="el-table">
 				<el-table-column label="ID" width="100px" align="center">
@@ -82,18 +80,11 @@
 </template>
 
 <script>
-import navbar from "@/components/Navbar"
-import crumbs from "@/components/Crumbs"
-
 export default {
 	data() {
 		return {
 			tableData: [],
 		}
-	},
-	components: {
-		navbar,
-		crumbs,
 	},
 	methods: {
 		// 请求用户信息
@@ -214,14 +205,6 @@ export default {
 <style scoped lang="less">
 .userManagement {
 	height: 100vh;
-	.nav {
-		position: relative;
-		z-index: 2;
-	}
-	.crumbs {
-		position: relative;
-		z-index: 1;
-	}
 	.content {
 		width: 100%;
     height: 85vh;
