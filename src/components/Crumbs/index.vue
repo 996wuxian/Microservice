@@ -23,10 +23,11 @@
       }
     },
     mounted() {
-      this.crumbsTitle = this.$store.state.crumbs.crumbsArray
+      this.crumbsTitle = this.$store.state.crumbs.crumbsArray 
     },
     watch: {
       $route() { 
+        this.$forceUpdate()
         this.crumbsTitle = this.$store.state.crumbs.crumbsArray
       }
     },

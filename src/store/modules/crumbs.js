@@ -51,6 +51,7 @@ export default {
           state.crumbsArray[i].changeBg = true
         }
       }
+      console.log(state.crumbsArray);
     },
     // 删除CrumbsItem
     deleteCrumbsItem(state, info) {

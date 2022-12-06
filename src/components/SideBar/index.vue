@@ -55,7 +55,7 @@ export default {
 				// 添加delete属性,由于state里已经定义了首页和文档的，这个是后续添加上的
 				item.deleteIcon = true
 				this.$store.commit("crumbs/addCrumbsItem", item)
-				// this.$store.commit("crumbs/initCrumbsTitle", item)
+				this.$store.commit("crumbs/initCrumbsTitle", item)
 			}
 		},
 	},
