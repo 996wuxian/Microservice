@@ -25,7 +25,7 @@
 					<template slot-scope="scope">
 						<i class="el-icon-time"></i>
 						<span style="margin-left: 10px">{{
-							scope.row.createdAt | dataFormat("yyyy-mm-dd-hh-mm-ss")
+							scope.row.updatedAt | dataFormat("yyyy-mm-dd-hh-mm-ss")
 						}}</span>
 					</template>
 				</el-table-column>
@@ -204,7 +204,6 @@ export default {
 
 <style scoped lang="less">
 .userManagement {
-	height: 100vh;
 	.content {
 		width: 100%;
     height: 85vh;

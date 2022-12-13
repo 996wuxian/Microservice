@@ -27,6 +27,14 @@ const routes = [
     component: () => import('@/components/Layout'),
     children: [
       {
+        path:'personal',
+        name:'personal',
+        component: () => import('@/views/Personal'),
+        meta: {
+          title: '个人中心'
+        }
+      },
+      {
         path:'home',
         name:'home',
         component: () => import('@/views/Home'),

@@ -1,17 +1,69 @@
 <template>
-	<div class="echarts">
-		<div style="width: 1250px; height: 400px" ref="echarts"></div>
-	</div>
+	<!-- 这里是柱状图的组件 -->
+	<div class="bar" ref="chart" :style="{ width, height }"></div>
 </template>
 
 <script>
+const echarts = require("echarts")
 export default {
+	name: "BarEcharts",
+	props: ["data"],
 	data() {
-		return {}
+		return {
+			title: null,
+			width: null,
+			height: null,
+			condition: false, //控制x轴是否为纵向显示
+			dataX: null,
+			dataY: null,
+			dataY1: null,
+			myChart: null,
+		}
+	},
+	watch: {
+		data: {
+			handler(newName, oldName) {
+				// console.log(newName)
+				this.$nextTick(() => {
+					this.dataX = this.data.dataX
+					this.dataY = this.data.dataY
+					this.dataY1 = this.data.dataY1
+					this.title = this.data.title
+					this.init()
+				})
+			},
+			// 代表在wacth里声明了firstName这个方法之后立即先去执行handler方法
+			immediate: true,
+			deep: true,
+		},
+	},
+	created() {
+		this.title = this.data.title
+		this.width = this.data.width
+		this.height = this.data.height
+		this.dataX = this.data.dataX
+		this.dataY1 = this.data.dataY1
+		this.condition = this.data.condition
+	},
+	mounted() {
+		window.addEventListener("resize", () => {
+			this.myChart.resize()
+		})
 	},
 	methods: {
-		EchartsInit() {
-			this.$echarts.init(this.$refs.echarts).setOption({
+		init() {
+			// 基于准备好的dom，初始化echarts实例
+			// 在每次调用前先销毁防止报There is a chart instance already initialized on the dom
+			if (
+				this.myChart != null &&
+				this.myChart != "" &&
+				this.myChart != undefined
+			) {
+				this.myChart.dispose() //销毁
+			}
+			let myChart = echarts.init(this.$refs.chart)
+			// 绘制图表
+			let option = {
 				tooltip: {
 					trigger: "axis",
 					axisPointer: {
@@ -22,12 +74,7 @@ export default {
 					},
 				},
 				legend: {
-					data: ["Email", "Search Engine"],
-				},
-				toolbox: {
-					feature: {
-						saveAsImage: {},
-					},
+					data: ["expected", "actual"],
 				},
 				grid: {
 					left: "3%",
@@ -35,58 +82,35 @@ export default {
 					bottom: "3%",
 					containLabel: true,
 				},
-				xAxis: [
-					{
-						type: "category",
-						boundaryGap: false,
-						data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-					},
-				],
-				yAxis: [
-					{
-						type: "value",
-					},
-				],
+				xAxis: {
+					type: "category",
+					data: this.dataX,
+					// 是否距离0
+					boundaryGap: false,
+				},
+				yAxis: {
+					type: "value",
+				},
 				series: [
 					{
-						name: "Email",
+						name: "expected",
+						data: this.dataY,
 						type: "line",
-						stack: "Total",
-						areaStyle: {},
-						emphasis: {
-							focus: "series",
-						},
-						data: [0, 132, 101, 134, 90, 230, 210],
+						smooth: true,
 					},
 					{
-						name: "Search Engine",
+						name: "actual",
+						data: this.dataY1,
 						type: "line",
-						stack: "Total",
-						label: {
-							show: true,
-							position: "top",
-						},
-						areaStyle: {},
-						emphasis: {
-							focus: "series",
-						},
-						data: [820, 932, 901, 934, 1290, 1330, 1320],
+						smooth: true,
 					},
 				],
-			})
+			}
+			myChart.setOption(option)
+			this.myChart = myChart
 		},
-	},
-  mounted() {
-		this.EchartsInit()
 	},
 }
 </script>
 
-<style scoped lang="less">
-.echarts {
-	width: 1250px;
-	height: 400px;
-	margin: 0 auto;
-	background-color: #ffffff;
-}
-</style>
+<style scoped></style>

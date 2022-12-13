@@ -10,9 +10,6 @@
 					{{ item.title }}
 					<span v-show="CrumbsIsShow(item, i)"> / </span>
 				</div>
-				<!-- <div class="title">
-					{{ title }}
-				</div> -->
 			</div>
 			<!-- 个人中心板块 -->
 			<div class="personal" @click="btnPersonal">
@@ -87,7 +84,9 @@ export default {
 		},
 		// 前往个人中心
 		person() {
-			console.log('个人中心');
+			this.$router.push({
+				name: 'personal'
+			})
 		},
 		// 前往首页
 		toHome() {
@@ -109,18 +108,6 @@ export default {
 			this.$router.go(0)
 		},
 	},
-	// computed: {
-	// 	getTitle() {
-	// 		this.currPath = this.$store.state.sidebar.currPath
-	// 		console.log(this.currPath);
-	// 	}
-	// },
-	mounted() {
-		// if(this.$route.meta.title) {
-		//   this.title = this.$route.meta.title
-		// }
-		// // 当页面加载完后，让vuex里存的路径给当前组件
-	}
 }
 </script>
 

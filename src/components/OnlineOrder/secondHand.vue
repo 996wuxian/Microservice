@@ -19,20 +19,20 @@
 			</div>
 			<div class="card-footer">
 				<el-button
-					v-if="item.is_order === '否'"
+					v-if="item.is_finish === '否'"
 					type="text"
 					@click.stop="orderBtn(item, index)"
 					class="card-button"
 					:disabled="item.is_order === '是'"
-					>接单</el-button
+				>{{item.is_order === '否' ? '接单' : '已接单'}}</el-button
 				>
 				<el-button
-					v-if="item.is_order === '是'"
+					v-if="item.is_finish === '是'"
 					type="text"
 					@click.stop="orderBtn(item, index)"
 					class="card-button"
 					:disabled="item.is_order === '是'"
-					>已接单</el-button
+				>{{item.is_finish === '是' ? '已完成' : '已接单'}}</el-button
 				>
 			</div>
 			<!-- :append-to-body='true' 解决dialog取消不了的情况 -->
@@ -46,11 +46,13 @@
 					<div class="cardTitle">标题：{{ cardInfo.title }}</div>
 					<div class="cardText">地址：{{ cardInfo.address }}</div>
 					<div class="cardDate">时间：{{ cardInfo.date }}</div>
-					<div class="cardDate" v-show="cardInfo.is_order === '是'">
-						接单情况：已接单
+					<div class="cardDate" v-if="cardInfo.is_finish === '否'">
+						接单情况:
+						{{cardInfo.is_order === '是' ? '已接单' : '未接单' }}
 					</div>
-					<div class="cardDate" v-show="cardInfo.is_order !== '是'">
-						接单情况：未接单
+					<div class="cardDate" v-if="cardInfo.is_finish === '是'">
+						接单情况:
+						{{cardInfo.is_order === '是' ? '已完成' : '已接单' }}
 					</div>
 				</div>
 				<span></span>
@@ -93,7 +95,7 @@ export default {
 					type: "warning",
 				})
 					.then(() => {
-						this.is_order = 1
+						this.is_order = "是"
 						const data = {
 							id: item.id,
 							email: item.email,
@@ -105,7 +107,7 @@ export default {
 							type: "success",
 							message: "接单成功!",
 						})
-						this.getSecond()
+						this.$router.go(0)
 					})
 					.catch(() => {
 						this.$message({
