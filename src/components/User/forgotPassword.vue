@@ -14,11 +14,11 @@
 						@keyup="clearBtnShow()"
 					/>
 					<label>
-						<span style="transition-delay: 0ms">E</span>
-						<span style="transition-delay: 50ms">m</span>
-						<span style="transition-delay: 100ms">a</span>
-						<span style="transition-delay: 150ms">i</span>
-						<span style="transition-delay: 200ms">l</span>
+						<span style="transition-delay: 0ms">请</span>
+						<span style="transition-delay: 50ms">输</span>
+						<span style="transition-delay: 100ms">入</span>
+						<span style="transition-delay: 150ms">邮</span>
+						<span style="transition-delay: 200ms">箱</span>
 					</label>
 					<div class="close" v-show="CloseShow" @click="clearValue">
 						<i class="el-icon-circle-close"></i>
@@ -79,36 +79,42 @@
 				<div class="form-control" v-show="ecInputShow">
 					<input type="value" required="" v-model.number.trim="code" />
 					<label>
-						<span style="transition-delay: 0ms">C</span>
-						<span style="transition-delay: 50ms">o</span>
-						<span style="transition-delay: 100ms">d</span>
-						<span style="transition-delay: 150ms">e</span>
+						<span style="transition-delay: 0ms">验</span>
+						<span style="transition-delay: 50ms">证</span>
+						<span style="transition-delay: 100ms">码</span>
 					</label>
 				</div>
 			</div>
-			<div class="cockBtn" @click="sendCock" v-show="ecInputShow"><button>SendCock</button></div>
-			<div class="confirm" @click="confirmed" v-show="ecInputShow"><button>Confirm</button></div>
-			<div class="changeBtn" @click="change" v-show="pwdInputShow"><button>Change</button></div>
+			<div class="btn">
+				<div class="cockBtn" @click="sendCock" v-show="ecInputShow">
+					<button>SendCock</button>
+				</div>
+				<div class="confirm" @click="confirmed" v-show="ecInputShow">
+					<button>Confirm</button>
+				</div>
+				<div class="changeBtn" @click="change" v-show="pwdInputShow">
+					<button>Change</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-
 export default {
 	name: "forgotPassword",
 	data() {
 		return {
 			email: "",
-			getEmail: '',
+			getEmail: "",
 			password: "",
 			againPassword: "",
-      // 
+			//
 			CloseShow: false,
 			openPassword: true,
 			openShow: false,
-			code: '',
-      // 
+			code: "",
+			//
 			checkEmail: false,
 			checkPassword: false,
 		}
@@ -125,23 +131,23 @@ export default {
 		},
 	},
 	methods: {
-    check() {
+		check() {
 			// 邮箱验证的正则表达式
 			const EmailReg = /^[1-9][0-9]{5,10}@qq.com$/
-			if (this.email != '') {
+			if (this.email != "") {
 				if (EmailReg.test(this.email)) {
 					// 这里是邮箱验证成功的代码
 					this.checkEmail = true
-				}  else {
+				} else {
 					this.$message.warning("邮箱输入错误")
-				} 
+				}
 			} else {
 				this.$message.warning("请输入邮箱")
 			}
 		},
-    // 当Username输入内容时，让清除按钮显示
+		// 当Username输入内容时，让清除按钮显示
 		clearBtnShow() {
-			if (this.email.trim != '') {
+			if (this.email.trim != "") {
 				this.CloseShow = true
 			} else {
 				this.CloseShow = false
@@ -149,7 +155,7 @@ export default {
 		},
 		// 点击清除按钮清除输入框的内容然后让清除按钮隐藏
 		clearValue() {
-			if (this.email.trim != '') {
+			if (this.email.trim != "") {
 				this.email = ""
 				this.CloseShow = false
 			}
@@ -168,13 +174,13 @@ export default {
 		},
 		// 验证两次密码是否匹配
 		confirmPassword() {
-			if ( this.password == "" ) {
+			if (this.password == "") {
 				this.$message.warning("密码不能为空")
 			} else {
 				// 密码验证的正则表达式
 				const PasswordReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
 				if (PasswordReg.test(this.password)) {
-						if (this.againPassword != this.password) {
+					if (this.againPassword != this.password) {
 						this.$message.warning("两次密码不匹配")
 					} else {
 						this.checkPassword = true
@@ -185,75 +191,74 @@ export default {
 			}
 		},
 		// 发送验证码
-    async sendCock() {
+		async sendCock() {
 			const data = {
 				email: this.email,
 			}
-      if (this.checkEmail) {
-        const res = await this.$store.dispatch('forgot/forgotCode', data)
-        if (res) {
+			if (this.checkEmail) {
+				const res = await this.$store.dispatch("forgot/forgotCode", data)
+				if (res) {
 					this.$message.success("验证码已发送")
-        }
-      } 
-			else {
-        this.$message.warning('请输入邮箱')
-      }
-    },
+				}
+			} else {
+				this.$message.warning("请输入邮箱")
+			}
+		},
 		// 确认验证码和邮箱是否存在数据库
-    async confirmed() {
+		async confirmed() {
 			this.getEmail = this.email
 			let time = new Date()
 			const data = {
 				email: this.email,
 				code: this.code,
-				codeTime: time
+				codeTime: time,
 			}
 			if (this.email && this.code) {
 				// 查询请求的code是否和数据库的一样
-        const res = await this.$store.dispatch('forgot/confirmChange', data)
+				const res = await this.$store.dispatch("forgot/confirmChange", data)
 				if (res) {
-					this.$message.success('请输入新的密码')
-					this.$store.commit('forgot/pwdInputShow')
-					this.$store.commit('forgot/ecInputShow')
+					this.$message.success("请输入新的密码")
+					this.$store.commit("forgot/pwdInputShow")
+					this.$store.commit("forgot/ecInputShow")
 					// 在清空前将这个邮箱赋值给...
-					this.email = ''
-					this.code = ''
+					this.email = ""
+					this.code = ""
 					// 让清除图标隐藏(bug)
 					this.CloseShow = false
 				}
-			} else if(this.email === '') {
-				this.$message.warning('请输入QQ邮箱')
+			} else if (this.email === "") {
+				this.$message.warning("请输入QQ邮箱")
 			} else {
-				this.$message.warning('请输入验证码')
+				this.$message.warning("请输入验证码")
 			}
-    },
-    async change() {
+		},
+		async change() {
 			const data = {
 				email: this.getEmail,
-				password: this.password
+				password: this.password,
 				// 使用后要释放内存
 			}
 			if (this.password && this.againPassword) {
-        const res = await this.$store.dispatch('forgot/handForgot', data)
+				const res = await this.$store.dispatch("forgot/handForgot", data)
 				if (res) {
-					this.$message.success('请输入新的密码')
-					this.$store.commit('forgot/pwdInputShow')
-					this.$store.commit('forgot/ecInputShow')
+					this.$message.success("请输入新的密码")
+					this.$store.commit("forgot/pwdInputShow")
+					this.$store.commit("forgot/ecInputShow")
 					// 在清空前将这个邮箱赋值给...
-					this.email = ''
-					this.code = ''
+					this.email = ""
+					this.code = ""
 					// 让清除图标隐藏(bug)
 					this.CloseShow = false
 				}
-			} else if(this.email === '') {
-				this.$message.warning('请输入QQ邮箱')
+			} else if (this.email === "") {
+				this.$message.warning("请输入QQ邮箱")
 			} else {
-				this.$message.warning('请输入验证码')
+				this.$message.warning("请输入验证码")
 			}
-			this.$store.commit('login/forgotPasswordHide')
-			this.$message.success('修改成功')
-    }
-  }
+			this.$store.commit("login/forgotPasswordHide")
+			this.$message.success("修改成功")
+		},
+	},
 }
 </script>
 
@@ -270,7 +275,9 @@ export default {
 	transition: all 0.3s;
 	.content {
 		width: 100%;
-		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		.forgotPwdShow-logo {
 			width: 100%;
 			height: 118px;
@@ -282,12 +289,10 @@ export default {
 			left: 0;
 		}
 		.forgotPwdShowInput {
-			position: absolute;
-			left: 50px;
-			margin-top: 14px;
+			margin-top: 18px;
 			.form-control {
 				position: relative;
-				margin: 20px 0 20px;
+				margin: 20px 0 30px;
 				width: 190px;
 				input {
 					background-color: transparent;
@@ -330,46 +335,49 @@ export default {
 				transform: translateY(-30px);
 			}
 		}
-    .confirm {
-      position: absolute;
-			width: 120px;
-			height: 40px;
-			bottom: 160px;
-			left: 160px;
-    }
-		.changeBtn {
-			position: absolute;
-			width: 200px;
-			height: 40px;
-			bottom: 160px;
-			left: 47px;
-		}
-		.changeBtn button {
-			width: 200px;
-		}
-		.cockBtn {
-			position: absolute;
-			width: 120px;
-			height: 40px;
-			bottom: 160px;
-			left: 20px;
-		}
-		button {
-			width: 120px;
-			height: 40px;
-			border-radius: 10px;
-			background-image: linear-gradient(to right, #6fd99bed, #62cdc1, #56c5f0);
-			color: #fff;
-			font-weight: 700;
-			cursor: pointer;
-			box-shadow: 0 5px #999;
-		}
-		button:hover {
-			background-image: linear-gradient(to right, #56c5f0, #62cdc1, #6fd99bed);
-		}
-		button:active {
-			box-shadow: 0 3px #666;
-			transform: translateY(2px);
+		.btn {
+			margin-top: 10px;
+			display: flex;
+			.confirm,
+			.cockBtn {
+				width: 120px;
+				height: 50px;
+				margin: 0 10px;
+			}
+			.changeBtn {
+				width: 200px;
+				height: 50px;
+			}
+			.changeBtn button {
+				width: 200px;
+			}
+			button {
+				width: 120px;
+				height: 40px;
+				border-radius: 10px;
+				background-image: linear-gradient(
+					to right,
+					#6fd99bed,
+					#62cdc1,
+					#56c5f0
+				);
+				color: #fff;
+				font-weight: 700;
+				cursor: pointer;
+				box-shadow: 0 5px #999;
+			}
+			button:hover {
+				background-image: linear-gradient(
+					to right,
+					#56c5f0,
+					#62cdc1,
+					#6fd99bed
+				);
+			}
+			button:active {
+				box-shadow: 0 3px #666;
+				transform: translateY(2px);
+			}
 		}
 	}
 }

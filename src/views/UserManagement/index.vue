@@ -1,7 +1,7 @@
 <template>
 	<div class="userManagement">
 		<div class="content">
-			<el-table :data="tableData" style="width: 100%" class="el-table">
+			<el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%" class="el-table">
 				<el-table-column label="ID" width="100px" align="center">
 					<template slot-scope="scope">
 						<span>{{ scope.row.id }}</span>
@@ -38,7 +38,7 @@
 					<template slot-scope="scope">
 						<el-button
 							size="mini"
-							:disabled="scope.row.is_admin === 1"
+							:disabled="scope.row.is_admin === '是'"
 							@click="handleEdit(scope.$index, scope.row)"
 							>编辑</el-button
 						>
@@ -52,7 +52,7 @@
 						<el-button
 							size="mini"
 							type="danger"
-							:disabled="scope.row.is_admin === 0"
+							:disabled="scope.row.is_admin === '否'"
 							@click="handleRevoke(scope.$index, scope.row)"
 							>撤销权限</el-button
 						>
@@ -69,7 +69,9 @@
 			</el-table>
 			<div class="block">
 				<el-pagination
-					:current-page="1"
+					@size-change="pageSizeChange"
+					@current-change="currentChange"
+					:current-page= this.currentPage
 					layout="total, prev, pager, next, jumper"
 					:total="this.tableData.length"
 				>
@@ -84,6 +86,8 @@ export default {
 	data() {
 		return {
 			tableData: [],
+			pageSize: 10,
+			currentPage:1,
 		}
 	},
 	methods: {
@@ -172,6 +176,12 @@ export default {
 				})
 				.catch(() => {})
 		},
+		pageSizeChange() {
+			console.log('当前页数据条数变化');
+		},
+		currentChange(val) {
+			this.currentPage = val
+		}
 	},
 	mounted() {
 		this.getAllUserInfo()
@@ -206,7 +216,7 @@ export default {
 .userManagement {
 	.content {
 		width: 100%;
-    height: 85vh;
+    height: 88vh;
     overflow:auto;
 		position: relative;
 		.block {

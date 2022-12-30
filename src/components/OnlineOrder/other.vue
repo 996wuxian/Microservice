@@ -1,7 +1,8 @@
 <template>
-	<div class="item">
+	<div class="item" v-masonry>
 		<div
 			class="card"
+			v-masonry-tile
 			v-for="(item, index) in tableData"
 			:key="index"
 			@click.stop="cardShow(item, index)"
@@ -11,6 +12,7 @@
 			</div>
 			<div class="card-info">
 				<p class="text-title">{{ item.title }}</p>
+				<p class="time">{{ item.email }}</p>
 				<p class="time">{{ item.date }}</p>
 			</div>
 		</div>
@@ -47,37 +49,11 @@ export default {
 	},
 	methods: {
 		async getInfo() {
+			if (this.tableData != '') {
+				this.tableData = null
+			}
 			const res = await this.$store.dispatch("other/getInfo")
 			this.tableData = res.result
-		},
-		// 接单按钮
-		orderBtn(item, index) {
-			this.$confirm("是否接单?", "提示", {
-				confirmButtonText: "确定",
-				cancelButtonText: "取消",
-				type: "warning",
-			})
-				.then(() => {
-					this.is_order = 1
-					const data = {
-						id: row.id,
-						email: row.email,
-						orderUser: this.user,
-						is_order: "0",
-					}
-					this.$store.dispatch("other/updateInfo", data)
-					this.$message({
-						type: "success",
-						message: "接单成功!",
-					})
-					this.getInfo()
-				})
-				.catch(() => {
-					this.$message({
-						type: "info",
-						message: "已取消接单",
-					})
-				})
 		},
 		// card详情
 		cardShow(item, index) {
@@ -87,7 +63,7 @@ export default {
 	},
 	mounted() {
 		this.getInfo()
-		this.user = JSON.parse(localStorage.getItem("admin")).data.result.username
+		this.user = JSON.parse(localStorage.getItem("admin")).data.result.userInfo.email
 	},
 }
 </script>
@@ -101,7 +77,7 @@ export default {
 		margin: 20px 0 0 40px;
 		width: 284px;
 		padding: 0.8em;
-		background: #667387;
+		background: #ee6666;
 		position: relative;
 		overflow: visible;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -140,7 +116,7 @@ export default {
 		}
 		.time {
 			font-size: 0.8em;
-			padding: 10px 0;
+			padding: 5px 0;
 		}
 	}
 }

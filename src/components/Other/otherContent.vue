@@ -1,8 +1,8 @@
 <template>
-	<div class="packContent">
+	<div class="otherContent">
 		<!-- :default-sort="{ prop: 'date', order: 'descending' }" 排序用的 -->
 		<el-table
-			:data="tableData"
+			:data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)"
 			style="width: 100%"
 			:default-sort="{ prop: 'date', order: 'descending' }"
 		>
@@ -33,7 +33,7 @@
 				</template>
 			</el-table-column>
 			<!-- prop="email" sortable 用来排序的 -->
-			<el-table-column label="用户" width="300" prop="email" sortable>
+			<el-table-column label="创建者" width="300" prop="email" sortable>
 				<template slot-scope="scope">
 					<i class="el-icon-message"></i>
 					<span style="margin-left: 10px">{{ scope.row.email }}</span>
@@ -44,7 +44,7 @@
 					<el-button
 						size="mini"
 						@click="handleEdit(scope.$index, scope.row)"
-						v-if="scope.row.is_finish === '否' && scope.row.email === user"
+						v-if= "scope.row.email === user"
 						>编辑</el-button
 					>
 					<el-dialog title="修改内容" :visible.sync="editShow" width="30%">
@@ -96,7 +96,6 @@
 					<el-button
 						size="mini"
 						type="danger"
-						style="margin-left: 10px"
 						v-if="scope.row.email === user"
 						@click="handleDelete(scope.$index, scope.row)"
 						>删除
@@ -104,6 +103,18 @@
 				</template>
 			</el-table-column>
 		</el-table>
+		<div class="block">
+			<el-pagination
+				:page-size="8"
+				:page-sizes="[this.tableData.length]"
+				@size-change="pageSizeChange"
+				@current-change="currentChange"
+				:current-page="this.currentPage"
+				layout="total, prev, pager, next, jumper"
+				:total="this.tableData.length"
+			>
+			</el-pagination>
+		</div>
 	</div>
 </template>
 
@@ -168,6 +179,9 @@ export default {
 					//若选择的日期小于等于当前日期（包含今天）： time.getTime() > Date.now()
 				},
 			},
+			// 分页
+			pageSize: 8,
+			currentPage: 1,
 		}
 	},
 	methods: {
@@ -246,44 +260,30 @@ export default {
 					})
 				})
 		},
-		async cancelOrder(index, row) {
-			this.author = row.email
-			if (this.user === row.email) {
-				this.$message.warning("无法取消自己的单号")
-			} else {
-				this.$confirm("是否取消接单", "提示", {
-					confirmButtonText: "确定",
-					cancelButtonText: "取消",
-					type: "warning",
-				})
-					.then(() => {
-						const data = {
-							id: row.id,
-							email: this.user,
-							is_order: "0",
-						}
-						this.$store.dispatch("other/updateInfo", data)
-						this.$message({
-							type: "success",
-							message: "撤销成功!",
-						})
-						this.$router.go(0)
-					})
-					.catch(() => {
-						this.$message({
-							type: "info",
-							message: "取消",
-						})
-					})
-			}
+		// 分页
+		pageSizeChange() {
+			console.log("当前页数据条数变化")
+		},
+		currentChange(val) {
+			this.currentPage = val
 		},
 	},
 	mounted() {
 		this.getOther()
 		// 获取localStorage里的用户名
-		this.user = JSON.parse(localStorage.getItem("admin")).data.result.username
+		this.user = JSON.parse(localStorage.getItem("admin")).data.result.userInfo.email
 	},
 }
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.otherContent {
+	height: 75vh;
+	position: relative;
+	.block {
+		position: absolute;
+		bottom: 0;
+		left: 35%;
+	}
+}
+</style>

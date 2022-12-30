@@ -13,11 +13,11 @@
 					@keyup="clearBtnShow()"
 				/>
 				<label>
-					<span style="transition-delay: 0ms">E</span>
-					<span style="transition-delay: 50ms">m</span>
-					<span style="transition-delay: 100ms">a</span>
-					<span style="transition-delay: 150ms">i</span>
-					<span style="transition-delay: 200ms">l</span>
+					<span style="transition-delay: 0ms">请</span>
+					<span style="transition-delay: 50ms">输</span>
+					<span style="transition-delay: 100ms">入</span>
+					<span style="transition-delay: 150ms">邮</span>
+					<span style="transition-delay: 200ms">箱</span>
 				</label>
 				<div class="close" v-show="CloseShow" @click="clearValue">
 					<i class="el-icon-circle-close"></i>
@@ -33,28 +33,25 @@
 					@keyup="openIconShow()"
 				/>
 				<label>
-					<span style="transition-delay: 0ms">P</span>
-					<span style="transition-delay: 50ms">a</span>
-					<span style="transition-delay: 100ms">s</span>
-					<span style="transition-delay: 150ms">s</span>
-					<span style="transition-delay: 200ms">w</span>
-					<span style="transition-delay: 250ms">o</span>
-					<span style="transition-delay: 300ms">r</span>
-					<span style="transition-delay: 350ms">d</span>
+					<span style="transition-delay: 0ms">请</span>
+					<span style="transition-delay: 50ms">输</span>
+					<span style="transition-delay: 100ms">入</span>
+					<span style="transition-delay: 150ms">密</span>
+					<span style="transition-delay: 200ms">码</span>
 				</label>
 				<div class="close" @click="openPasswordBtn" v-show="openShow">
 					<i :class="openPassword ? 'el-icon-turn-off' : 'el-icon-open'"></i>
 				</div>
 			</div>
 		</div>
-		<div class="loginBtn"><button @click="login">Login</button></div>
-		<div class="forgot" @click="showForgotPwd">forgot password</div>
-		<div class="registerText" @click="showRegister">register</div>
+		<div class="loginBtn"><button @click="login">登录</button></div>
+		<div class="forgot" @click="showForgotPwd">忘记密码</div>
+		<div class="registerText" @click="showRegister">注册</div>
 	</div>
 </template>
 
 <script>
-import { setLocalStorageAndTime } from '@/utils/auth'
+import { setLocalStorageAndTime } from "@/utils/auth"
 
 export default {
 	name: "userLogin",
@@ -66,10 +63,10 @@ export default {
 			CloseShow: false,
 			// 显示密码
 			openPassword: true,
-			// 
+			//
 			openShow: false,
-      registerShow:'',
-      allow:false
+			registerShow: "",
+			allow: false,
 		}
 	},
 	methods: {
@@ -81,11 +78,11 @@ export default {
 			let str = this.email
 			if (reg.test(str)) {
 				// 这里是邮箱验证成功的代码
-        this.allow = true
+				this.allow = true
 			} else if (str === "") {
 				this.$message({
-					type:'warning',
-					message:'请输入邮箱',
+					type: "warning",
+					message: "请输入邮箱",
 				})
 			} else {
 				this.$message.warning("邮箱输入错误")
@@ -124,33 +121,33 @@ export default {
 				email: this.email,
 				password: this.password,
 			}
-      if (this.email && this.password && this.allow) {
-        const res = await this.$store.dispatch("login/handLogin", loginInfo)
-				setLocalStorageAndTime('admin',res)
-        if (res) {
-					this.$message.success('登录成功')
-					this.password = ''
+			if (this.email && this.password && this.allow) {
+				const res = await this.$store.dispatch("login/handLogin", loginInfo)
+				setLocalStorageAndTime("admin", res)
+				if (res) {
+					this.$message.success("登录成功")
+					this.password = ""
 					this.CloseShow = false
 					this.openShow = false
-					this.$router.push('/layout')
-        }
-      }
+					this.$router.push("/layout")
+				}
+			}
 		},
-    // 显示register
-    showRegister() {
-      this.$store.commit('login/registerShow')
+		// 显示register
+		showRegister() {
+			this.$store.commit("login/registerShow")
 			// 隐藏ForgotPwd
-      this.$store.commit('login/forgotPasswordHide')
-      this.$store.commit('forgot/changeRegisterPage')
-    },
+			this.$store.commit("login/forgotPasswordHide")
+			this.$store.commit("forgot/changeRegisterPage")
+		},
 		// 显示ForgotPwd
 		showForgotPwd() {
-      this.$store.commit('login/forgotPasswordShow')
+			this.$store.commit("login/forgotPasswordShow")
 			// 隐藏register
-      this.$store.commit('login/registerHide')
+			this.$store.commit("login/registerHide")
 			// 重新回到改变页面
-      this.$store.commit('forgot/changeRegisterPage')
-		}
+			this.$store.commit("forgot/changeRegisterPage")
+		},
 	},
 }
 </script>
@@ -158,6 +155,8 @@ export default {
 <style scoped lang="less">
 .login {
 	position: relative;
+	display: flex;
+	flex-direction: column;
 	width: 300px;
 	height: 500px;
 	background-color: #313f4c;
@@ -169,12 +168,14 @@ export default {
 		width: 280px;
 	}
 	.loginInput {
-		position: absolute;
-		left: 50px;
-		width: 200px;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 10px;
 		.form-control {
 			position: relative;
-			margin: 20px 0 20px;
+			margin: 20px 0 15px;
 			width: 190px;
 			input {
 				background-color: transparent;
@@ -182,7 +183,7 @@ export default {
 				border-bottom: 2px #fff solid;
 				display: block;
 				width: 100%;
-				padding: 18px 0 2px;
+				padding: 12px 0 2px;
 				font-size: 16px;
 				color: #fff;
 			}
@@ -193,7 +194,7 @@ export default {
 			}
 			label {
 				position: absolute;
-				top: 18px;
+				top: 12px;
 				left: 0;
 				pointer-events: none;
 				span {
@@ -206,7 +207,7 @@ export default {
 			}
 			.close {
 				position: absolute;
-				top: 20px;
+				top: 14px;
 				right: 0;
 				color: #fff;
 			}
@@ -218,31 +219,30 @@ export default {
 		}
 	}
 	.forgot {
-		position: absolute;
-		left: 80px;
-		bottom: 100px;
-		font-style: oblique;
+		width: 100%;
+		height: 40px;
+		line-height: 40px;
 		cursor: pointer;
 	}
 	.forgot:hover {
-		transition: all .3s;
+		transition: all 0.3s;
 		color: #fff;
 	}
 	.registerText {
-		position: absolute;
-		left: 120px;
-		bottom: 60px;
-		font-style: oblique;
+		width: 100%;
+		height: 40px;
+		line-height: 40px;
 		cursor: pointer;
 	}
 	.registerText:hover {
-		transition: all .3s;
+		transition: all 0.3s;
 		color: #fff;
 	}
+	// 登录按钮
 	.loginBtn {
-		position: absolute;
-		left: 47px;
-		top: 300px;
+		width: 100%;
+		height: 40px;
+		margin: 25px 0;
 		button {
 			width: 200px;
 			height: 40px;

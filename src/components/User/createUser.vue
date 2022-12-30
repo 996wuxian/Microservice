@@ -14,14 +14,12 @@
 						@keyup="clearBtnShow()"
 					/>
 					<label>
-						<span style="transition-delay: 0ms">N</span>
-						<span style="transition-delay: 50ms">e</span>
-						<span style="transition-delay: 100ms">w</span>
-						<span style="transition-delay: 150ms">e</span>
-						<span style="transition-delay: 200ms">m</span>
-						<span style="transition-delay: 250ms">a</span>
-						<span style="transition-delay: 300ms">i</span>
-						<span style="transition-delay: 350ms">l</span>
+						<span style="transition-delay: 0ms">Q</span>
+						<span style="transition-delay: 50ms">Q</span>
+						<span style="transition-delay: 100ms">邮</span>
+						<span style="transition-delay: 150ms">箱</span>
+						<span style="transition-delay: 200ms">注</span>
+						<span style="transition-delay: 250ms">册</span>
 					</label>
 					<div class="close" v-show="CloseShow" @click="clearValue">
 						<i class="el-icon-circle-close"></i>
@@ -36,17 +34,11 @@
 						@keyup="openIconShow()"
 					/>
 					<label>
-						<span style="transition-delay: 0ms">N</span>
-						<span style="transition-delay: 50ms">e</span>
-						<span style="transition-delay: 100ms">w</span>
-						<span style="transition-delay: 150ms">P</span>
-						<span style="transition-delay: 200ms">a</span>
-						<span style="transition-delay: 100ms">s</span>
-						<span style="transition-delay: 150ms">s</span>
-						<span style="transition-delay: 200ms">w</span>
-						<span style="transition-delay: 250ms">o</span>
-						<span style="transition-delay: 300ms">r</span>
-						<span style="transition-delay: 350ms">d</span>
+						<span style="transition-delay: 0ms">注</span>
+						<span style="transition-delay: 50ms">册</span>
+						<span style="transition-delay: 100ms">的</span>
+						<span style="transition-delay: 150ms">密</span>
+						<span style="transition-delay: 200ms">码</span>
 					</label>
 					<div class="close" @click="openPasswordBtn" v-show="openShow">
 						<i :class="openPassword ? 'el-icon-turn-off' : 'el-icon-open'"></i>
@@ -61,19 +53,12 @@
 						@keyup="openIconShow()"
 					/>
 					<label>
-						<span style="transition-delay: 0ms">A</span>
-						<span style="transition-delay: 50ms">g</span>
-						<span style="transition-delay: 150ms">a</span>
-						<span style="transition-delay: 200ms">i</span>
-						<span style="transition-delay: 250ms">n</span>
-						<span style="transition-delay: 300ms">P</span>
-						<span style="transition-delay: 350ms">a</span>
-						<span style="transition-delay: 400ms">s</span>
-						<span style="transition-delay: 450ms">s</span>
-						<span style="transition-delay: 500ms">w</span>
-						<span style="transition-delay: 550ms">o</span>
-						<span style="transition-delay: 600ms">r</span>
-						<span style="transition-delay: 650ms">d</span>
+						<span style="transition-delay: 0ms">再</span>
+						<span style="transition-delay: 50ms">次</span>
+						<span style="transition-delay: 100ms">输</span>
+						<span style="transition-delay: 150ms">入</span>
+						<span style="transition-delay: 200ms">密</span>
+						<span style="transition-delay: 250ms">码</span>
 					</label>
 					<div class="close" @click="openPasswordBtn" v-show="openShow">
 						<i :class="openPassword ? 'el-icon-turn-off' : 'el-icon-open'"></i>
@@ -82,21 +67,21 @@
 				<div class="form-control">
 					<input type="value" required="" v-model.number.trim="code" />
 					<label>
-						<span style="transition-delay: 0ms">C</span>
-						<span style="transition-delay: 50ms">o</span>
-						<span style="transition-delay: 100ms">d</span>
-						<span style="transition-delay: 150ms">e</span>
+						<span style="transition-delay: 0ms">验</span>
+						<span style="transition-delay: 50ms">证</span>
+						<span style="transition-delay: 100ms">码</span>
 					</label>
 				</div>
 			</div>
-			<div class="registerBtn" @click="register"><button>Register</button></div>
-			<div class="cockBtn" @click="sendCock"><button>SendCock</button></div>
+			<div class="btn">
+				<div class="cockBtn" @click="sendCock"><button>发送验证码</button></div>
+				<div class="registerBtn" @click="register"><button>注册</button></div>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-
 export default {
 	name: "createUser",
 	data() {
@@ -107,9 +92,9 @@ export default {
 			CloseShow: false,
 			openPassword: true,
 			openShow: false,
-			code: '',
+			code: "",
 			checkEmail: false,
-			checkPassword: false
+			checkPassword: false,
 		}
 	},
 	computed: {
@@ -121,13 +106,13 @@ export default {
 		check() {
 			// 邮箱验证的正则表达式
 			const EmailReg = /^[1-9][0-9]{5,10}@qq.com$/
-			if (this.email != '') {
+			if (this.email != "") {
 				if (EmailReg.test(this.email)) {
 					// 这里是邮箱验证成功的代码
 					this.checkEmail = true
-				}  else {
+				} else {
 					this.$message.warning("邮箱输入错误,请输入QQ邮箱")
-				} 
+				}
 			} else {
 				this.$message.warning("请输入邮箱")
 			}
@@ -161,13 +146,13 @@ export default {
 		},
 		// 验证两次密码是否匹配
 		confirmPassword() {
-			if ( this.password == "" ) {
+			if (this.password == "") {
 				this.$message.warning("密码不能为空")
 			} else {
 				// 密码验证的正则表达式
 				const PasswordReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
 				if (PasswordReg.test(this.password)) {
-						if (this.againPassword != this.password) {
+					if (this.againPassword != this.password) {
 						this.$message.warning("两次密码不匹配")
 					} else {
 						this.checkPassword = true
@@ -184,18 +169,21 @@ export default {
 				email: this.email,
 				password: this.password,
 				code: this.code,
-				codeDate: time
+				codeDate: time,
 			}
-			console.log(data);
+			console.log(data)
 			if (this.checkEmail && this.checkPassword) {
 				if (this.code == "") {
 					this.$message.warning("请输入验证码")
 				} else {
 					const res = await this.$store.dispatch("register/handRegister", data)
 					if (res) {
-						(this.email = ""), (this.password = ""), (this.againPassword = ""), (this.code = "")
+						;(this.email = ""),
+							(this.password = ""),
+							(this.againPassword = ""),
+							(this.code = "")
 						this.$store.commit("login/registerShow")
-						this.$message.success('注册成功')
+						this.$message.success("注册成功")
 						this.checkPassword = false
 						this.checkEmail = false
 					}
@@ -204,21 +192,20 @@ export default {
 				this.$message.warning("请输入正确的邮箱和密码")
 			}
 		},
-    // 发送验证码
-    async sendCock() {
+		// 发送验证码
+		async sendCock() {
 			const data = {
 				email: this.email,
 			}
-      if (this.checkEmail && this.checkPassword) {
-        const res = await this.$store.dispatch('register/registerCode', data)
-        if (res) {
+			if (this.checkEmail && this.checkPassword) {
+				const res = await this.$store.dispatch("register/registerCode", data)
+				if (res) {
 					this.$message.success("验证码已发送")
-        }
-      } 
-			else {
-        this.$message.warning('请输入邮箱和密码')
-      }
-    }
+				}
+			} else {
+				this.$message.warning("请输入邮箱和密码")
+			}
+		},
 	},
 }
 </script>
@@ -236,7 +223,9 @@ export default {
 	transition: all 0.3s;
 	.content {
 		width: 100%;
-		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		.register-logo {
 			width: 100%;
 			height: 118px;
@@ -248,12 +237,10 @@ export default {
 			left: 0;
 		}
 		.registerInput {
-			position: absolute;
-			left: 50px;
-			margin-top: 14px;
+			margin-top: 25px;
 			.form-control {
 				position: relative;
-				margin: 20px 0 20px;
+				margin: 20px 0 25px;
 				width: 190px;
 				input {
 					background-color: transparent;
@@ -261,7 +248,7 @@ export default {
 					border-bottom: 2px #fff solid;
 					display: block;
 					width: 100%;
-					padding: 18px 0 2px;
+					padding: 10px 0 2px;
 					font-size: 16px;
 					color: #fff;
 				}
@@ -272,7 +259,7 @@ export default {
 				}
 				label {
 					position: absolute;
-					top: 18px;
+					top: 9px;
 					left: 0;
 					pointer-events: none;
 					span {
@@ -285,7 +272,7 @@ export default {
 				}
 				.close {
 					position: absolute;
-					top: 20px;
+					top: 12px;
 					right: 0;
 					color: #fff;
 				}
@@ -296,19 +283,14 @@ export default {
 				transform: translateY(-30px);
 			}
 		}
-		.registerBtn {
-			position: absolute;
-			width: 120px;
-			height: 40px;
-			bottom: 40px;
-			left: 160px;
-		}
-		.cockBtn {
-			position: absolute;
-			width: 120px;
-			height: 40px;
-			bottom: 40px;
-			left: 20px;
+		.btn {
+			display: flex;
+			margin-top: 10px;
+			div {
+				width: 120px;
+				height: 50px;
+				margin: 0 10px;
+			}
 		}
 		button {
 			width: 120px;

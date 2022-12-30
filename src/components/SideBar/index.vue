@@ -71,8 +71,8 @@ export default {
 	},
 	mounted() {
 		// 判断是否是管理员登录sidebar要显示的部分
-		this.is_admin = JSON.parse(localStorage.getItem("admin")).data.result.is_admin
-		if (this.is_admin) {
+		this.is_admin = JSON.parse(localStorage.getItem("admin")).data.result.userInfo.is_admin
+		if (this.is_admin === '是') {
 			this.navItem = this.$store.state.sidebar.NavItem
 		} else {
 			this.navItem = this.$store.state.sidebar.NavItem

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import echarts from "@/components/Echarts"
+import echarts from "@/components/Echarts/homeEcharts.vue"
 
 export default {
 	data() {

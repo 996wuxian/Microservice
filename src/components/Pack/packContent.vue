@@ -1,6 +1,10 @@
 <template>
 	<div class="packContent">
-		<el-table :data="tableData" style="width: 100%"
+		<el-table
+			:data="
+				tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+			"
+			style="width: 100%"
 			:default-sort="{ prop: 'date', order: 'descending' }"
 		>
 			<el-table-column
@@ -15,7 +19,7 @@
 			</el-table-column>
 			<el-table-column
 				label="标题"
-				width="150"
+				width="120"
 				align="center"
 				:show-overflow-tooltip="true"
 				class="table"
@@ -26,7 +30,7 @@
 			</el-table-column>
 			<el-table-column
 				label="地址"
-				width="150"
+				width="120"
 				align="center"
 				:show-overflow-tooltip="true"
 			>
@@ -46,12 +50,16 @@
 					<span style="margin-left: 10px">{{ scope.row.price }}</span>
 				</template>
 			</el-table-column>
-			<el-table-column label="用户" width="200" 
-			prop="email" sortable
-			>
+			<el-table-column label="创建者" width="200" prop="email" sortable>
 				<template slot-scope="scope">
 					<i class="el-icon-message"></i>
 					<span style="margin-left: 10px">{{ scope.row.email }}</span>
+				</template>
+			</el-table-column>
+			<el-table-column label="接单者" width="200" prop="email" sortable>
+				<template slot-scope="scope">
+					<i class="el-icon-message"></i>
+					<span style="margin-left: 10px">{{ scope.row.orderUser === null ? '未接单' : scope.row.orderUser }}</span>
 				</template>
 			</el-table-column>
 			<el-table-column label="是否接单" width="80" align="center">
@@ -141,7 +149,9 @@
 					>
 					<el-button
 						size="mini"
-						:disabled="scope.row.is_order === '否' || scope.row.is_finish === '是'"
+						:disabled="
+							scope.row.is_order === '否' || scope.row.is_finish === '是'
+						"
 						@click="finishOrder(scope.$index, scope.row)"
 						v-show="scope.row.email !== user"
 						>{{
@@ -151,6 +161,18 @@
 				</template>
 			</el-table-column>
 		</el-table>
+		<div class="block">
+			<el-pagination
+				:page-size="8"
+				:page-sizes="[this.tableData.length]"
+				@size-change="pageSizeChange"
+				@current-change="currentChange"
+				:current-page="this.currentPage"
+				layout="total, prev, pager, next, jumper"
+				:total="this.tableData.length"
+			>
+			</el-pagination>
+		</div>
 	</div>
 </template>
 
@@ -218,6 +240,9 @@ export default {
 					//若选择的日期小于等于当前日期（包含今天）： time.getTime() > Date.now()
 				},
 			},
+			// 分页
+			pageSize: 8,
+			currentPage: 1,
 		}
 	},
 	methods: {
@@ -352,13 +377,33 @@ export default {
 					})
 				})
 		},
+		// 分页
+		pageSizeChange() {
+			console.log("当前页数据条数变化")
+		},
+		currentChange(val) {
+			this.currentPage = val
+		},
 	},
 	mounted() {
 		this.getPack()
 		// 获取localStorage里的用户名
-		this.user = JSON.parse(localStorage.getItem("admin")).data.result.username
+		this.user = JSON.parse(
+			localStorage.getItem("admin")
+		).data.result.userInfo.email
 	},
 }
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.packContent {
+	height: 75vh;
+	position: relative;
+	.block {
+		position: absolute;
+		bottom: 0;
+		left: 35%;
+	}
+}
+
+</style>

@@ -20,6 +20,10 @@ Vue.use(ElementUI)
 import * as echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 
+// 在线接单瀑布流插件
+import { VueMasonryPlugin } from 'vue-masonry'
+Vue.use(VueMasonryPlugin)
+
 Vue.config.productionTip = false
 
 new Vue({

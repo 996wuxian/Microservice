@@ -61,8 +61,6 @@
 <script>
 export default {
   name:'addPack',
-	components: {
-	},
 	data() {
 		return {
 			dialogVisible: false,
@@ -122,23 +120,23 @@ export default {
 					//若选择的日期小于等于当前日期（包含今天）： time.getTime() > Date.now()
 				},
 			},
-			tableData: [],
 		}
 	},
 	methods: {
+		// 提交内容
 		submitForm(formName) {
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
-					const username = JSON.parse(localStorage.getItem("admin"))
+					const userInfo = JSON.parse(localStorage.getItem("admin")).data.result.userInfo
 					const data = {
+						microUserId: userInfo.id,
 						title: this.ruleForm.title,
 						address: this.ruleForm.address,
 						date:
 							this.ruleForm.date1 + " " + this.formate(this.ruleForm.date2),
 						price: this.ruleForm.price,
-						email: username.data.result.username,
+						email: userInfo.email
 					}
-					console.log(data);
 					// 发送请求
 					this.$store.dispatch("pack/addPack", data)
 					// 提交后重置内容

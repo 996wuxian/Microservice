@@ -60,9 +60,8 @@
 
 <script>
 export default {
-  name:'addSecondHand',
-	components: {
-	},
+	name: "addSecondHand",
+	components: {},
 	data() {
 		return {
 			dialogVisible: false,
@@ -126,21 +125,21 @@ export default {
 		submitForm(formName) {
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
-					const username = JSON.parse(localStorage.getItem("admin"))
+					const userInfo = JSON.parse(localStorage.getItem("admin")).data.result.userInfo
 					const data = {
+						microUserId: userInfo.id,
 						title: this.ruleForm.title,
 						address: this.ruleForm.address,
-						date:
-							this.ruleForm.date1 + " " + this.formate(this.ruleForm.date2),
+						date: this.ruleForm.date1 + " " + this.formate(this.ruleForm.date2),
 						price: this.ruleForm.price,
-						email: username.data.result.username,
+						email: userInfo.email,
 					}
 					// 发送请求
 					this.$store.dispatch("secondHand/addSecond", data)
 					// 提交后重置内容
 					this.$refs[formName].resetFields()
 					this.$message.success("添加成功")
-          this.$router.go(0)
+					this.$router.go(0)
 					// 让dialog隐藏
 					this.dialogVisible = false
 				} else {

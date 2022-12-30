@@ -1,7 +1,8 @@
 <template>
-	<div class="item">
+	<div class="item" v-masonry>
 		<div
 			class="card"
+			v-masonry-tile
 			v-for="(item, index) in tableData"
 			:key="index"
 			@click.stop="cardShow(item, index)"
@@ -15,6 +16,7 @@
 			<div class="card-info">
 				<p class="text-title">{{ item.title }}</p>
 				<p class="text-body">{{ item.address }}</p>
+				<p class="text-body">{{ item.email }}</p>
 				<p class="time">{{ item.date }}</p>
 			</div>
 			<div class="card-footer">
@@ -80,6 +82,9 @@ export default {
 	},
 	methods: {
 		async getExpress() {
+			if (this.tableData != '') {
+				this.tableData = null
+			}
 			const res = await this.$store.dispatch("express/getExpress")
 			this.tableData = res.result
 		},
@@ -125,20 +130,17 @@ export default {
 	},
 	mounted() {
 		this.getExpress()
-		this.user = JSON.parse(localStorage.getItem("admin")).data.result.username
+		this.user = JSON.parse(localStorage.getItem("admin")).data.result.userInfo.email
 	},
 }
 </script>
 <style scoped lang="less">
 .item {
-	display: flex;
-	align-items: flex-start;
-	flex-wrap: wrap;
 	.card {
 		margin: 20px 0 0 40px;
 		width: 184px;
 		padding: 0.8em;
-		background: #65849f;
+		background: #91cc75;
 		position: relative;
 		overflow: visible;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -179,7 +181,7 @@ export default {
 		}
 		.text-body {
 			font-size: 0.9em;
-			padding: 10px 0;
+			padding: 5px 0;
 		}
 		.time {
 			font-size: 0.8em;

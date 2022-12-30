@@ -6,8 +6,8 @@ import { Message } from 'element-ui';
 import { getToken, setToken } from '@/utils/auth'
 
 const server = axios.create({
-  baseURL: 'http://localhost:8123',
-  timeout: 5000
+  baseURL: 'http://localhost:3000',
+  timeout: 60000
 })
 
 // 请求拦截

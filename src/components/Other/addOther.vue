@@ -54,9 +54,8 @@
 
 <script>
 export default {
-  name:'addInfo',
-	components: {
-	},
+	name: "addInfo",
+	components: {},
 	data() {
 		return {
 			dialogVisible: false,
@@ -108,19 +107,19 @@ export default {
 		submitForm(formName) {
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
-					const username = JSON.parse(localStorage.getItem("admin"))
+					const userInfo = JSON.parse(localStorage.getItem("admin")).data.result.userInfo
 					const data = {
+						microUserId: userInfo.id,
 						title: this.ruleForm.title,
-						date:
-							this.ruleForm.date1 + " " + this.formate(this.ruleForm.date2),
-						email: username.data.result.username,
+						date: this.ruleForm.date1 + " " + this.formate(this.ruleForm.date2),
+						email: userInfo.email,
 					}
 					// 发送请求
 					this.$store.dispatch("other/addInfo", data)
 					// 提交后重置内容
 					this.$refs[formName].resetFields()
 					this.$message.success("添加成功")
-          this.$router.go(0)
+					this.$router.go(0)
 					// 让dialog隐藏
 					this.dialogVisible = false
 				} else {

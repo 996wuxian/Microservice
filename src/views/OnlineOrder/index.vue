@@ -41,6 +41,7 @@ export default {
 		},
 		handleClick(tab, event) {
 			// console.log(tab, event)
+			this.$router.go(0)
 			sessionStorage.setItem('handle_order_name', tab.name)
 		},
 		// 接单按钮
@@ -78,6 +79,7 @@ export default {
 		},
 	},
 	created () {
+		// 记录每次刷新前的tab,就不会刷新后回到第一个
 		// console.log(sessionStorage.getItem('handle_order_name'));
     if (sessionStorage.getItem('handle_order_name') == undefined) {
       this.activeName = 'pack'
@@ -92,8 +94,7 @@ export default {
 }
 </script>
 <style scoped lang="less">
-.home {
-	height: 100vh;
+.onlineOrder {
 	.content {
 		width: 100%;
 		height: 85vh;
